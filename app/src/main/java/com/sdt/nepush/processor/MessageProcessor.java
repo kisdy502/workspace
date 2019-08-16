@@ -57,6 +57,7 @@ public class MessageProcessor implements IMessageProcessor {
                         Log.e(TAG, "未找到消息处理handler，msgType=" + message.getHead().getMsgType());
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Log.e(TAG, "消息处理出错，reason=" + e.getMessage());
                 }
             }
