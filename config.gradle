@@ -1,0 +1,51 @@
+ext {
+    android = [
+            applicationId    : "com.sdt.nepush",
+            minSdkVersion    : 14,
+            targetSdkVersion : 25,
+            compileSdkVersion: 25,
+            buildToolsVersion: "25.0.3",
+            versionCode      : 10001,
+            versionName      : "1.0.01",
+            multiDexEnabled  : true
+    ]
+
+    dependVersion = [
+            support         : "25.1.1",
+            dbflow_version  : "4.2.1",
+            rxjava_version  : "2.1.1",
+            retrofit_version: "2.3.0"
+    ]
+
+    dependencies = [
+            recyclerview_v7        : "com.android.support:recyclerview-v7:${dependVersion.support}",
+            support_v4             : "com.android.support:support-v4:${dependVersion.support}",
+            appcompat_v7           : "com.android.support:appcompat-v7:${dependVersion.support}",
+            design                 : "com.android.support:design:${dependVersion.support}",
+            support_vector_drawable: "com.android.support:support-vector-drawable:${dependVersion.support}",
+
+            test_junit             : "junit:junit:4.12",
+            test_runner            : "com.android.support.test:runner:1.0.2",
+            test_espresso          : "com.android.support.test.espresso:espresso-core:3.0.2",
+
+            multidex               : "com.android.support:multidex:1.0.1",
+
+            fastjson               : "com.alibaba:fastjson:1.2.49",
+            protobuf               : "com.google.protobuf:protobuf-java:3.9.0",
+
+            dbflow_processor       : "com.github.Raizlabs.DBFlow:dbflow-processor:${dependVersion.dbflow_version}",
+            dbflow_core            : "com.github.Raizlabs.DBFlow:dbflow-core:${dependVersion.dbflow_version}",
+            dbflow                 : "com.github.Raizlabs.DBFlow:dbflow:${dependVersion.dbflow_version}",
+            dbflow_sqlcipher       : "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dependVersion.dbflow_version}",
+
+
+            rxjava                 : "io.reactivex.rxjava2:rxjava:${dependVersion.rxjava_version}",
+            rxandroid              : "io.reactivex.rxjava2:rxandroid:${dependVersion.rxjava_version}",
+
+            retrofit               : "com.squareup.retrofit2:retrofit:${dependVersion.retrofit_version}",
+            converter_gson         : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofit_version}",
+            adapter_rxjava2        : "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofit_version}",
+
+
+    ]
+}

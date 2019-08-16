@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    
+    <Button
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="h-248dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="248dp" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+    <Button
+        android:onClick="internal"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="customadapt(fragment)"
+        android:background="#26da32"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <Button
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="h-125dp"
+        android:background="#c41ad7"
+        android:layout_width="match_parent"
+        android:layout_height="125dp" />
+
+
+
+    <Button
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:text="h-192dp"
+        android:background="#ef0b12"
+        android:layout_width="match_parent"
+        android:layout_height="192dp" />
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    api group: 'io.netty', name: 'netty-all', version: '4.1.37.Final'
+    api rootProject.ext.dependencies.protobuf
+    api rootProject.ext.dependencies.fastjson
+
+    implementation project(':libcommon')
+}

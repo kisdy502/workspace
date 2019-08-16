@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 点击表情的背景颜色== -->
+    <item android:drawable="@drawable/shape_bg_click_emjo" android:state_pressed="true" />
+
+</selector>
