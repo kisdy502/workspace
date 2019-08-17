@@ -1,6 +1,7 @@
 package com.sdt.nepush.activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,15 +14,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.sdt.libchat.core.ImsClient;
+import com.sdt.libcommon.esc.ILogger;
+import com.sdt.libcommon.esc.ILoggerFactory;
+import com.sdt.nepush.ImsManager;
 import com.sdt.nepush.R;
+import com.sdt.nepush.event.CEventCenter;
+import com.sdt.nepush.event.Events;
+import com.sdt.nepush.event.I_CEventListener;
 import com.sdt.nepush.fragment.ContactFragment;
 import com.sdt.nepush.fragment.ConversationFragment;
 import com.sdt.nepush.fragment.MineFragment;
+import com.sdt.nepush.msg.SingleMessage;
+import com.sdt.nepush.net.ApiConstant;
+import com.sdt.nepush.util.CThreadPoolExecutor;
 import com.sdt.nepush.widget.ImageTextView;
 
 import java.lang.reflect.Method;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, I_CEventListener {
+
+    private ILogger logger = ILoggerFactory.getLogger(getClass());
 
     private ImageTextView mBtnConversation;
     private ImageTextView mBtnContact;
@@ -32,6 +45,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private MineFragment mMineFragment;
     private Fragment mCurrentFragment;
     private FragmentManager mFragmentManager;
+    private ProgressDialog dialog;
+    private String userId, token;
+
+    private static final String[] EVENTS = {
+            Events.SYS_PUSH_MESSAGE,
+            Events.CHAT_SINGLE_MESSAGE,
+            Events.LIST_FRIEND_MESSAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +62,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         initUI();
         initToolBar();
+        CEventCenter.registerEventListener(this, EVENTS);
+        initExtra();
+        handshake();
+    }
+
+    private void initExtra() {
+        userId = getIntent().getStringExtra("userId");
+        token = getIntent().getStringExtra("token");
+    }
+
+    private void handshake() {
+        if (ImsManager.getInstance().isInited()) {
+            return;
+        }
+        dialog = ProgressDialog.show(this, "提示", "连接中...");
+        dialog.setCanceledOnTouchOutside(true);
+        ImsManager.getInstance().init(userId, token, ApiConstant.HOSTJSON, ImsClient.APP_FORGROUND);
     }
 
     private void initUI() {
@@ -111,6 +149,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        CEventCenter.unregisterEventListener(this, EVENTS);
     }
 
     @Override
@@ -181,6 +220,36 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (mMineFragment != null) {
             transaction.hide(mMineFragment);
+        }
+    }
+
+    @Override
+    public void onCEvent(String topic, int msgCode, int resultCode, Object obj) {
+        switch (topic) {
+            case Events.SYS_PUSH_MESSAGE: {
+                final SingleMessage message = (SingleMessage) obj;
+                CThreadPoolExecutor.runOnMainThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        logger.d("from pushServer:" + message.getContent() + "\n");
+                    }
+                });
+                break;
+            }
+            case Events.LIST_FRIEND_MESSAGE: {
+
+                CThreadPoolExecutor.runOnMainThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                break;
+            }
         }
     }
 }

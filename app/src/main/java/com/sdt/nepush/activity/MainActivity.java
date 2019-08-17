@@ -38,7 +38,7 @@ import com.sdt.nepush.util.CThreadPoolExecutor;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-
+@Deprecated
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, I_CEventListener {
 
     ILogger logger = ILoggerFactory.getLogger(getClass());

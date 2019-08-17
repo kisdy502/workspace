@@ -7,9 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
+import com.sdt.nepush.App;
 import com.sdt.nepush.R;
 import com.sdt.nepush.bean.RegisterResp;
 import com.sdt.nepush.bean.UserBean;
@@ -23,12 +25,14 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
     Button btnRegister;
     Button btnToLogin;
     EditText edtUserName;
     EditText edtPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +70,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .subscribe(new Observer<RegisterResp>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onNext(RegisterResp registerResp) {
                         logger.d("registerResp:" + registerResp.toString());
+                        if (registerResp.isSuccess()) {
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(App.getInstance(), registerResp.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         logger.d("e:" + e.getMessage());
+                        Toast.makeText(App.getInstance(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

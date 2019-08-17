@@ -48,6 +48,12 @@ public enum MessageType {
     */
     GET_OUTLINE_MESSAGE_LIST(1103),
 
+
+    /*
+    * 上报收到的离线消息列表
+    */
+    REPORT_RECEIVED_OUTLINE_MESSAGE_LIST(1105),
+
     /**
      * 单聊消息
      */

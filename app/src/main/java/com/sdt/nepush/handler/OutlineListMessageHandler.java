@@ -5,21 +5,19 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.bean.FriendBean;
+import com.sdt.nepush.ImsManager;
+import com.sdt.nepush.MessageType;
 import com.sdt.nepush.db.Message2Model;
 import com.sdt.nepush.db.Message2Model_Table;
-import com.sdt.nepush.db.UserRelation2Model;
-import com.sdt.nepush.db.UserRelation2Model_Table;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
 import com.sdt.nepush.msg.AppMessage;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.UUID;
 
 public class OutlineListMessageHandler extends AbstractMessageHandler {
 
@@ -29,10 +27,10 @@ public class OutlineListMessageHandler extends AbstractMessageHandler {
     protected void action(AppMessage message) {
         logger.d("离线消息:message=" + message);
         if (message != null && message.getHead() != null) {
+            StringBuilder sbMsgIds = new StringBuilder();           //回复服务器消息送达
             String messageListString = message.getBody();
 
             Gson gson = new Gson();
-
             JsonParser parser = new JsonParser();
             //通过JsonParser对象可以把json格式的字符串解析成一个JsonElement对象
             JsonElement el = parser.parse(messageListString);
@@ -41,6 +39,8 @@ public class OutlineListMessageHandler extends AbstractMessageHandler {
 
                 JsonObject jsonObject = jsonElement.getAsJsonObject();
                 String msgId = jsonObject.get("messageId").getAsString();
+
+                sbMsgIds.append(msgId).append(",");
 
                 //避免插入重复数据
                 Message2Model dbMessage = SQLite.select().from(Message2Model.class).where(Message2Model_Table.msgId.eq(msgId)).querySingle();
@@ -68,8 +68,28 @@ public class OutlineListMessageHandler extends AbstractMessageHandler {
                 message2Model.save();
             }
 
-            CEventCenter.dispatchEvent(Events.LIST_OUTLINE_MESSAGE, 0, 0, null);
+            if (sbMsgIds.length() > 1) {
+                //离线消息成功接收,通知服务器改变消息状态
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("received_messageId_list", sbMsgIds.substring(0, sbMsgIds.length() - 1));
+
+                TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
+                TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
+                headBuilder.setMsgType(MessageType.REPORT_RECEIVED_OUTLINE_MESSAGE_LIST.getMsgType());
+                headBuilder.setStatusReport(0);
+                headBuilder.setMsgContentType(0);
+                headBuilder.setMsgId(UUID.randomUUID().toString());
+                headBuilder.setFromId(message.getHead().getToId());
+                headBuilder.setToId("");
+                headBuilder.setTimestamp(System.currentTimeMillis());
+                headBuilder.setExtend("");
+                builder.setBody(jsonObject.toString());
+                builder.setHeader(headBuilder);
+                TransMessageProtobuf.TransMessage transMessage = builder.build();
+                ImsManager.getInstance().sendMessage(transMessage, false);
+            }
         }
+        CEventCenter.dispatchEvent(Events.LIST_OUTLINE_MESSAGE, 0, 0, null);
     }
 
 }

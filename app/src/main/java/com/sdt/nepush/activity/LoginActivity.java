@@ -7,12 +7,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
+import com.sdt.nepush.App;
 import com.sdt.nepush.R;
 import com.sdt.nepush.bean.LoginRestResp;
 import com.sdt.nepush.bean.UserBean;
@@ -112,6 +114,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         logger.d("LoginRestResp:" + loginRestResp.toString());
                         if (loginRestResp.isSuccess()) {
                             loginRestResp.getData();
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            intent.putExtra("userId", userName);
+                            intent.putExtra("token", loginRestResp.getData());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(App.getInstance(), loginRestResp.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
