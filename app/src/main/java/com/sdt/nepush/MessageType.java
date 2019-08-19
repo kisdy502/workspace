@@ -39,6 +39,22 @@ public enum MessageType {
     SERVER_MSG_SENT_STATUS_REPORT(1010),
 
     /*
+     * 客户端强制下线，在其它地方登录，被踢下线
+     */
+    FORCE_CLIENT_LOGOUT(1003),
+
+    /*
+     * 添加好友
+     */
+    MESSAGE_REQUEST_ADD_FRIEND(1011),
+
+    /*
+     * 同意添加好友
+     */
+    MESSAGE_AGREE_ADD_FRIEND(1012),
+
+
+    /*
      * 返回好友列表
      */
     GET_USER_FRIEND_LIST(1101),

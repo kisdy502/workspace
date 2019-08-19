@@ -40,38 +40,29 @@
             android:scaleType="fitXY"
             android:src="@drawable/chat_item_icon_bg_selector" />
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_toRightOf="@+id/icon"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="tom"
-            android:textColor="#CFCFCF"
-            android:textSize="14sp" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUserName"
             android:layout_marginLeft="6dip"
             android:layout_marginTop="6dp"
             android:layout_toRightOf="@id/icon"
             android:background="@drawable/balloon_l_selector"
-            android:clickable="true"
-            android:minHeight="44.0dip">
+            android:clickable="true">
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:maxWidth="250dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp"
+                android:gravity="left"
+                android:maxWidth="200dp"
                 android:text="你也好"
-                android:gravity="center"
                 android:textColor="#ff000000"
                 android:textSize="16.0sp" />
 
@@ -82,7 +73,6 @@
             android:id="@+id/progressBar1"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_below="@+id/tvUserName"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

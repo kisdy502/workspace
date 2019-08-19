@@ -3,11 +3,14 @@ package com.sdt.nepush.net;
 
 import com.sdt.nepush.bean.LoginRestResp;
 import com.sdt.nepush.bean.RegisterResp;
+import com.sdt.nepush.bean.SearchRestResp;
 import com.sdt.nepush.bean.UserBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HEAD;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -26,6 +29,9 @@ public interface MedicalService {
 
     @GET("/user/login")
     Observable<LoginRestResp> login(@Query("username") String name, @Query("password") String password);
+
+    @GET("/user/search")
+    Observable<SearchRestResp> search(@Query("keyword") String name, @Header("token") String token);
 
 
 }

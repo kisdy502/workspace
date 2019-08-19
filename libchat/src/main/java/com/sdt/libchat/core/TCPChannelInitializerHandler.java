@@ -2,6 +2,7 @@ package com.sdt.libchat.core;
 
 import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libchat.core.NettyClient;
+import com.sdt.libchat.handler.ForceLogoutHandler;
 import com.sdt.libchat.handler.HandleFriendListHandler;
 import com.sdt.libchat.handler.HandleOutLineMessageListHandler;
 import com.sdt.libchat.handler.HeartbeatRespHandler;
@@ -53,6 +54,8 @@ public class TCPChannelInitializerHandler extends ChannelInitializer<Channel> {
         pipeline.addLast(HeartbeatRespHandler.class.getSimpleName(), new HeartbeatRespHandler(nettyClient));
         // 接收消息处理handler
         pipeline.addLast(SystemPushMessageHandler.class.getSimpleName(), new SystemPushMessageHandler(nettyClient));
+        pipeline.addLast(ForceLogoutHandler.class.getSimpleName(), new ForceLogoutHandler(nettyClient));
+
         pipeline.addLast(TCPReadHandler.class.getSimpleName(), new TCPReadHandler(nettyClient));
     }
 }

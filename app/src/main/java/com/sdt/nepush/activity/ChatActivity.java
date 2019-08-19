@@ -3,8 +3,10 @@ package com.sdt.nepush.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,8 +65,36 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
         initChatMessageList();
         initRecyclerList();
+        initToolBar();
     }
 
+    private void initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_chat_toolbar);
+        toolbar.setPopupTheme(R.style.popup_theme);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(toUserId);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
 
     private void pwDesplay() {
         DisplayMetrics dm = getResources().getDisplayMetrics();

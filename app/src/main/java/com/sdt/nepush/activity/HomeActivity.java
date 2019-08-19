@@ -2,9 +2,12 @@ package com.sdt.nepush.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.menu.MenuBuilder;
@@ -13,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.sdt.libchat.core.ImsClient;
 import com.sdt.libcommon.esc.ILogger;
@@ -45,12 +49,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private MineFragment mMineFragment;
     private Fragment mCurrentFragment;
     private FragmentManager mFragmentManager;
+    private Toolbar mToolbar;
     private ProgressDialog dialog;
     private String userId, token;
 
     private static final String[] EVENTS = {
             Events.SYS_PUSH_MESSAGE,
             Events.CHAT_SINGLE_MESSAGE,
+            Events.FORCE_LOGOUT_MESSAGE,
             Events.LIST_FRIEND_MESSAGE
     };
 
@@ -102,22 +108,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbar.setPopupTheme(R.style.popup_theme);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        mToolbar.setPopupTheme(R.style.popup_theme);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
+        mToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                return false;
+                if (item.getItemId() == R.id.action_item1) {
+
+                } else if (item.getItemId() == R.id.action_item2) {
+                    startActivity(new Intent(HomeActivity.this, AddFriendActivity.class));
+                }
+                return true;
             }
         });
     }
@@ -173,6 +184,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (id) {
             case R.id.btn_conversation:
                 mBtnConversation.setSelected(true);
+                mToolbar.setTitle("Conversation");
                 if (mConversationFragment == null) {
                     mConversationFragment = ConversationFragment.newInstance();
                     transaction.add(R.id.content_layout, mConversationFragment);
@@ -183,6 +195,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.mine_btn:
                 mMineBtn.setSelected(true);
+                mToolbar.setTitle("Mine");
                 if (mMineFragment == null) {
                     mMineFragment = new MineFragment();
                     transaction.add(R.id.content_layout, mMineFragment);
@@ -192,6 +205,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 mCurrentFragment = mMineFragment;
                 break;
             case R.id.btn_contact:
+                mToolbar.setTitle("Contact");
                 mBtnContact.setSelected(true);
                 if (mContactFragment == null) {
                     mContactFragment = new ContactFragment();
@@ -243,9 +257,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void run() {
-                        if (dialog.isShowing()) {
+                        if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }
+                    }
+                });
+                break;
+            }
+            case Events.FORCE_LOGOUT_MESSAGE: {
+                CThreadPoolExecutor.runOnMainThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        new AlertDialog.Builder(HomeActivity.this).setIcon(android.R.drawable.btn_star)
+                                .setTitle("通知").setMessage("账号在其它地方登录")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // TODO Auto-generated method stub
+                                        Toast.makeText(HomeActivity.this, "确定了", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                                        HomeActivity.this.finish();
+                                    }
+                                })
+                                /*.setNeutralButton("一般",new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,int which) {
+                                        // TODO Auto-generated method stub
+                                        Toast.makeText(HomeActivity.this,"我对海贼王不怎么感兴趣", Toast.LENGTH_SHORT).show();
+                                    }
+                                })*/
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // TODO Auto-generated method stub
+                                        Toast.makeText(HomeActivity.this, "重新登录", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                                        HomeActivity.this.finish();
+                                    }
+                                }).show();// show很关键
                     }
                 });
                 break;

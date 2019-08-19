@@ -73,7 +73,7 @@ public class ImsManager {
 
                             @Override
                             public void run() {
-                                Toast.makeText(App.getInstance(), "连接", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), "正在连接...", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -85,7 +85,7 @@ public class ImsManager {
 
                             @Override
                             public void run() {
-                                Toast.makeText(App.getInstance(), "次连接成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), "连接成功", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -149,7 +149,6 @@ public class ImsManager {
                         jsonObj.put("token", token);
                         headBuilder.setExtend(jsonObj.toString());
                         builder.setHeader(headBuilder.build());
-
                         return builder.build();
                     }
 
@@ -192,6 +191,11 @@ public class ImsManager {
                     @Override
                     public int getHandshakeMsgType() {
                         return MessageType.HANDSHAKE.getMsgType();
+                    }
+
+                    @Override
+                    public int getForceLogoutMsgType() {
+                        return MessageType.FORCE_CLIENT_LOGOUT.getMsgType();
                     }
 
                     @Override
@@ -259,5 +263,12 @@ public class ImsManager {
             }
         }
         return null;
+    }
+
+
+    public void close() {
+        if (inited)
+            imsClient.close();
+        inited = false;
     }
 }

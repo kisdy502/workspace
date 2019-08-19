@@ -89,6 +89,12 @@ public interface OnEventListener {
     int getHeartbeatMsgType();
 
     int getHandshakeMsgType();
+    /**
+     * 强制退出
+     *
+     * @return
+     */
+    int getForceLogoutMsgType();
 
     /**
      * 获取离线消息类型

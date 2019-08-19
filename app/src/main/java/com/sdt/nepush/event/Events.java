@@ -11,5 +11,6 @@ public class Events {
     public static final String CHAT_GROUP_MESSAGE = "chat_group_message";
     public static final String LIST_FRIEND_MESSAGE = "list_friend_message";
     public static final String LIST_OUTLINE_MESSAGE = "list_outline_message";
+    public static final String FORCE_LOGOUT_MESSAGE = "force_logout_message";
     public static final String REPORT_CHAT_MESSAGE_STATUS = "report_chat_message_status";
 }

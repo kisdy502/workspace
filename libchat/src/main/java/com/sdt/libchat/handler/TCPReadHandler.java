@@ -61,21 +61,21 @@ public class TCPReadHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        logger.i("TestMsgHandler channelInactive()");
+        logger.i("TCPReadHandler channelInactive()");
         Channel channel = ctx.channel();
         if (channel != null) {
             channel.close();
             ctx.close();
         }
-        // 触发重连
-        nettyClient.prepareConnect(false);
+        // 触发重连 ,考虑到客户端被踢下线的情形，这里不能简单的就重连
+        //nettyClient.prepareConnect(false);
     }
 
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        logger.e("TestMsgHandler exceptionCaught()");
+        logger.e("TCPReadHandler exceptionCaught()");
         Channel channel = ctx.channel();
         if (channel != null) {
             channel.close();

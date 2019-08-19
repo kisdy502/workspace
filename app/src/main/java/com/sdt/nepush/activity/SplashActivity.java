@@ -48,5 +48,6 @@ public class SplashActivity extends AppCompatActivity {
             intent.putExtra("token", token);
             startActivity(intent);
         }
+        finish();
     }
 }

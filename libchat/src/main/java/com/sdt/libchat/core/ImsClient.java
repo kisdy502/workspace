@@ -50,6 +50,8 @@ public interface ImsClient {
 
     int getHandshakeMsgType();
 
+    int getForceLogoutMsgType();
+
     int getOutLineMsgListType();
 
     int getServerSentReportMsgType();

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
+import com.sdt.libcommon.esc.ILogger;
+import com.sdt.libcommon.esc.ILoggerFactory;
 
 
 /**
@@ -12,6 +14,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
  */
 
 public class App extends Application {
+    ILogger logger = ILoggerFactory.getLogger(getClass());
     private static App instance;
 
     protected void attachBaseContext(Context context) {
@@ -24,6 +27,12 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         FlowManager.init(this);      //初始化DBFLOW
+        logger.i("----------------");
+        logger.i("-");
+        logger.i("-App onCreate");
+        logger.i("-");
+        logger.i("----------------");
+
     }
 
 

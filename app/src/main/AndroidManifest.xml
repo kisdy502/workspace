@@ -26,7 +26,20 @@
         <activity android:name=".activity.UCenterActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.HomeActivity" />
+        <activity
+            android:name=".activity.AddFriendActivity"
+            android:launchMode="singleTask">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.AddFriendActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
 
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

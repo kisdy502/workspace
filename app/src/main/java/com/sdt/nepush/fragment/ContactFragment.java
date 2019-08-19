@@ -47,7 +47,6 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
         initData();
     }
 
-
     private void initData() {
         User2Model currentUser = User2Model.getLoginUser();
         friendList = SQLite.select().from(UserRelation2Model.class)

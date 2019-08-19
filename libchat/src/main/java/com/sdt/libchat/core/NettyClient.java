@@ -156,6 +156,14 @@ public class NettyClient implements ImsClient {
     }
 
     @Override
+    public int getForceLogoutMsgType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getForceLogoutMsgType();
+        }
+        return 0;
+    }
+
+    @Override
     public int getOutLineMsgListType() {
         if (mOnEventListener != null) {
             return mOnEventListener.getOutLineMsgListType();
@@ -204,7 +212,6 @@ public class NettyClient implements ImsClient {
         if (mOnEventListener != null && mOnEventListener.getReconnectInterval() != 0) {
             return resendInterval = mOnEventListener.getResendInterval();
         }
-
         return resendInterval;
     }
 
@@ -463,7 +470,7 @@ public class NettyClient implements ImsClient {
         private void sendHandshakeMsg() {
             TransMessageProtobuf.TransMessage handshakeMsg = getHandshakeMsg();
             if (handshakeMsg != null) {
-                logger.d("发送握手消息，message=" + handshakeMsg);
+                logger.d("发送握手消息，message=" + handshakeMsg.getHeader().getMsgId());
                 sendMsg(handshakeMsg, false);
             } else {
                 logger.d("请应用层构建握手消息！");

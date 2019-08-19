@@ -39,6 +39,7 @@ public class MessageHandlerFactory {
         HANDLERS.put(MessageType.GET_USER_FRIEND_LIST.getMsgType(), new FriendListMessageHandler());
 
         HANDLERS.put(MessageType.GET_OUTLINE_MESSAGE_LIST.getMsgType(), new OutlineListMessageHandler());
+        HANDLERS.put(MessageType.FORCE_CLIENT_LOGOUT.getMsgType(), new ForceLogoutMessageHandler());
     }
 
     /**

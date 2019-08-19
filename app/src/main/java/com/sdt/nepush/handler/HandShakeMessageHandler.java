@@ -38,8 +38,10 @@ public class HandShakeMessageHandler extends AbstractMessageHandler {
                 ImsManager.getInstance().sendMessage(buildMessage(), false);
                 ImsManager.getInstance().sendMessage(buildMessage2(), false);
                 //握手后需要做的事情，比如获取好友列表,获取离线消息，等等
-            } else {
+            } else if (status == -1) {
                 logger.d("握手失败了...");//怎么做??重新登录??
+            } else if (status == 0) {
+                logger.d("客户端被踢下线了...");//怎么做??重新登录??
             }
         }
     }
