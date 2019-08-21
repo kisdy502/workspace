@@ -2,10 +2,12 @@ package com.sdt.nepush.handler;
 
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
+import com.sdt.nepush.App;
 import com.sdt.nepush.msg.AppMessage;
 import com.sdt.nepush.msg.SingleMessage;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
+import com.sdt.nepush.notification.NotificationHelper;
 
 
 /**
@@ -40,5 +42,8 @@ public class SysPushMessageHandler extends AbstractMessageHandler {
         msg.setExtend(message.getHead().getExtend());
         msg.setContent(message.getBody());
         CEventCenter.dispatchEvent(Events.SYS_PUSH_MESSAGE, 0, 0, msg);
+
+        //TODO 后台发通知
+        NotificationHelper.notifyMessage(App.getInstance(), message);
     }
 }

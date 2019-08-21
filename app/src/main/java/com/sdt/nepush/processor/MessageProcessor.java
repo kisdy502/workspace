@@ -2,12 +2,14 @@ package com.sdt.nepush.processor;
 
 import android.util.Log;
 
+import com.sdt.nepush.App;
 import com.sdt.nepush.ImsManager;
 import com.sdt.nepush.msg.AppMessage;
 import com.sdt.nepush.msg.BaseMessage;
 import com.sdt.nepush.msg.ContentMessage;
 import com.sdt.nepush.handler.IMessageHandler;
 import com.sdt.nepush.handler.MessageHandlerFactory;
+import com.sdt.nepush.notification.NotificationHelper;
 import com.sdt.nepush.util.CThreadPoolExecutor;
 
 

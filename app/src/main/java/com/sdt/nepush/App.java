@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
+import com.sdt.nepush.notification.NotificationHelper;
 
 
 /**
@@ -32,6 +33,7 @@ public class App extends Application {
         logger.i("-App onCreate");
         logger.i("-");
         logger.i("----------------");
+        NotificationHelper.initNotificationChannel(instance);
 
     }
 

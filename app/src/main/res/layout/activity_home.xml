@@ -66,6 +66,8 @@
         android:layout_height="50dp"
         android:background="?attr/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/popup_theme"
+        app:theme="@style/toolbar_theme"
         app:title="@string/app_name" />
 
 </RelativeLayout>

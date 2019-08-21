@@ -10,6 +10,8 @@
         android:id="@+id/add_friend_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        app:theme="@style/toolbar_theme"
+        app:popupTheme="@style/popup_theme"
         android:background="?attr/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
         app:title="@string/app_name" />
@@ -33,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+
             android:textSize="24sp" />
     </RelativeLayout>
 

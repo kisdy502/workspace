@@ -55,7 +55,6 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
 
     private void initToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.add_friend_toolbar);
-        mToolbar.setPopupTheme(R.style.popup_theme);
         setSupportActionBar(mToolbar);
         mToolbar.setTitle("添加新朋友");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,6 +64,7 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
                 finish();
             }
         });
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         mToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

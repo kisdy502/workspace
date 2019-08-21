@@ -109,7 +109,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mToolbar.setPopupTheme(R.style.popup_theme);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -118,6 +117,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         mToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
 
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

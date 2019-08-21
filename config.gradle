@@ -2,16 +2,16 @@ ext {
     android = [
             applicationId    : "com.sdt.nepush",
             minSdkVersion    : 14,
-            targetSdkVersion : 25,
-            compileSdkVersion: 25,
-            buildToolsVersion: "25.0.3",
+            targetSdkVersion : 28,
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
             versionCode      : 10001,
             versionName      : "1.0.01",
             multiDexEnabled  : true
     ]
 
     dependVersion = [
-            support         : "25.1.1",
+            support         : "28.0.0",
             dbflow_version  : "4.2.1",
             rxjava_version  : "2.1.1",
             retrofit_version: "2.3.0"
