@@ -21,7 +21,7 @@ public class BaseMessage {
     protected int msgContentType; // 消息内容乐行
     protected String fromId;      // 发送者id
     protected String toId;        // 接收者id
-    protected long timestamp;     // 消息时间戳
+    protected long sendTime;     // 消息时间戳
     protected int statusReport;   // 消息状态报告
     protected String extend;      // 扩展字段，以key/value形式存放json
     protected String content;     // 消息内容
@@ -66,12 +66,12 @@ public class BaseMessage {
         this.toId = toId;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getSendTime() {
+        return sendTime;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
     }
 
     public int getStatusReport() {

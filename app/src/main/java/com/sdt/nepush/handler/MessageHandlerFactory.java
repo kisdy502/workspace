@@ -2,7 +2,7 @@ package com.sdt.nepush.handler;
 
 import android.util.SparseArray;
 
-import com.sdt.nepush.MessageType;
+import com.sdt.nepush.ims.MessageType;
 
 
 /**
@@ -40,6 +40,7 @@ public class MessageHandlerFactory {
 
         HANDLERS.put(MessageType.GET_OUTLINE_MESSAGE_LIST.getMsgType(), new OutlineListMessageHandler());
         HANDLERS.put(MessageType.FORCE_CLIENT_LOGOUT.getMsgType(), new ForceLogoutMessageHandler());
+        HANDLERS.put(MessageType.MESSAGE_REQUEST_ADD_FRIEND.getMsgType(), new HandleAddFriendHandler());
     }
 
     /**

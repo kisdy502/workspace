@@ -1,10 +1,10 @@
 package com.sdt.libchat.core;
 
 import com.sdt.im.protobuf.TransMessageProtobuf;
-import com.sdt.libchat.IMSConnectStatusCallback;
+import com.sdt.libchat.OnConnectStatusCallback;
 import com.sdt.libchat.MsgDispatcher;
 import com.sdt.libchat.OnEventListener;
-import com.sdt.libchat.timer.MsgTimeoutTimerManager;
+import com.sdt.libchat.timer.MsgTimeoutManager;
 
 import java.util.Vector;
 
@@ -34,7 +34,7 @@ public interface ImsClient {
 
     void close();
 
-    void init(Vector<String> serverUrlList, IMSConnectStatusCallback callback, OnEventListener listener);
+    void init(Vector<String> serverUrlList, OnConnectStatusCallback callback, OnEventListener listener);
 
     void setAppStatus(int appStatus);
 
@@ -54,13 +54,21 @@ public interface ImsClient {
 
     int getOutLineMsgListType();
 
+    /**
+     * 请求添加好友
+     */
+    int getRequestAddFriendType();
+
     int getServerSentReportMsgType();
 
     int getClientReceivedReportMsgType();
 
+    //聊天消息类型
+    int getSingleChatMsgType();
+
     boolean isClosed();
 
-    MsgTimeoutTimerManager getMsgTimeoutTimerManager();
+    MsgTimeoutManager getMsgTimeoutTimerManager();
 
 
     /**

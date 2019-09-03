@@ -34,12 +34,12 @@ public class SingleChatMessageHandler extends AbstractMessageHandler {
         logger.d(TAG, "收到单聊消息，message=" + message);
 
         SingleMessage msg = new SingleMessage();
-        msg.setMsgId(message.getHead().getMsgId());
-        msg.setMsgType(message.getHead().getMsgType());
-        msg.setMsgContentType(message.getHead().getMsgContentType());
+        msg.setMsgId(message.getHead().getMessageId());
+        msg.setMsgType(message.getHead().getMessageType());
+        msg.setMsgContentType(message.getHead().getMessageContentType());
         msg.setFromId(message.getHead().getFromId());
         msg.setToId(message.getHead().getToId());
-        msg.setTimestamp(message.getHead().getTimestamp());
+        msg.setSendTime(message.getHead().getSendTime());
         msg.setExtend(message.getHead().getExtend());
         msg.setContent(message.getBody());
 
@@ -53,12 +53,12 @@ public class SingleChatMessageHandler extends AbstractMessageHandler {
 
     private Message2Model saveMessage2Db(SingleMessage message) {
         Message2Model message2Model = new Message2Model();
-        message2Model.setMsgId(message.getMsgId());
-        message2Model.setMsgType(message.getMsgType());
+        message2Model.setMessageId(message.getMsgId());
+        message2Model.setMessageType(message.getMsgType());
         message2Model.setMsgContentType(message.getMsgContentType());
         message2Model.setFromId(message.getFromId());
         message2Model.setToId(message.getToId());
-        message2Model.setTimestamp(message.getTimestamp());
+        message2Model.setSendTime(message.getSendTime());
         message2Model.setContent(message.getContent());
         message2Model.setStatusReport(message.getStatusReport());
         message2Model.setExtend(message.getExtend());

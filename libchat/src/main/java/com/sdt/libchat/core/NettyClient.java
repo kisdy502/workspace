@@ -2,12 +2,12 @@ package com.sdt.libchat.core;
 
 import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libchat.ExecutorServiceFactory;
-import com.sdt.libchat.IMSConnectStatusCallback;
+import com.sdt.libchat.OnConnectStatusCallback;
 import com.sdt.libchat.MsgDispatcher;
 import com.sdt.libchat.OnEventListener;
 import com.sdt.libchat.handler.HeartbeatHandler;
 import com.sdt.libchat.handler.TCPReadHandler;
-import com.sdt.libchat.timer.MsgTimeoutTimerManager;
+import com.sdt.libchat.timer.MsgTimeoutManager;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
 
@@ -53,21 +53,21 @@ public class NettyClient implements ImsClient {
 
     private ExecutorServiceFactory loopGroup;// 线程池工厂
 
-    private IMSConnectStatusCallback mIMSConnectStatusCallback;// ims连接状态回调监听器
+    private OnConnectStatusCallback mIMSConnectStatusCallback;// ims连接状态回调监听器
     private OnEventListener mOnEventListener;// 与应用层交互的listener
     private MsgDispatcher msgDispatcher;// 消息转发器
 
-    private MsgTimeoutTimerManager msgTimeoutTimerManager;// 消息发送超时定时器管理
+    private MsgTimeoutManager msgTimeoutTimerManager;// 消息发送超时定时器管理
 
     @Override
-    public void init(Vector<String> serverUrlList, IMSConnectStatusCallback callback, OnEventListener listener) {
+    public void init(Vector<String> serverUrlList, OnConnectStatusCallback callback, OnEventListener listener) {
         this.serverUrlList = serverUrlList;
         mIMSConnectStatusCallback = callback;
         mOnEventListener = listener;
         loopGroup = new ExecutorServiceFactory();
         loopGroup.initBossLoopGroup();            // 初始化重连线程组
         msgDispatcher = new MsgDispatcher(mOnEventListener);
-        msgTimeoutTimerManager = new MsgTimeoutTimerManager(this);
+        msgTimeoutTimerManager = new MsgTimeoutManager(this);
         closed = false;
         prepareConnect(true);                      // 进行第一次连接
     }
@@ -172,6 +172,14 @@ public class NettyClient implements ImsClient {
     }
 
     @Override
+    public int getRequestAddFriendType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getRequestAddFriendType();
+        }
+        return 0;
+    }
+
+    @Override
     public int getServerSentReportMsgType() {
         if (mOnEventListener != null) {
             return mOnEventListener.getServerSentReportMsgType();
@@ -189,12 +197,20 @@ public class NettyClient implements ImsClient {
     }
 
     @Override
+    public int getSingleChatMsgType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getSingleChatMsgType();
+        }
+        return 0;
+    }
+
+    @Override
     public boolean isClosed() {
         return closed;
     }
 
     @Override
-    public MsgTimeoutTimerManager getMsgTimeoutTimerManager() {
+    public MsgTimeoutManager getMsgTimeoutTimerManager() {
         return msgTimeoutTimerManager;
     }
 

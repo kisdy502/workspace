@@ -33,16 +33,16 @@ public class SysPushMessageHandler extends AbstractMessageHandler {
         logger.d(TAG, "收到服务器推送消息，message=" + message);
 
         SingleMessage msg = new SingleMessage();
-        msg.setMsgId(message.getHead().getMsgId());
-        msg.setMsgType(message.getHead().getMsgType());
-        msg.setMsgContentType(message.getHead().getMsgContentType());
+        msg.setMsgId(message.getHead().getMessageId());
+        msg.setMsgType(message.getHead().getMessageType());
+        msg.setMsgContentType(message.getHead().getMessageContentType());
         msg.setFromId(message.getHead().getFromId());
         msg.setToId(message.getHead().getToId());
-        msg.setTimestamp(message.getHead().getTimestamp());
+        msg.setSendTime(message.getHead().getSendTime());
         msg.setExtend(message.getHead().getExtend());
         msg.setContent(message.getBody());
-        CEventCenter.dispatchEvent(Events.SYS_PUSH_MESSAGE, 0, 0, msg);
 
+        CEventCenter.dispatchEvent(Events.SYS_PUSH_MESSAGE, 0, 0, msg);
         //TODO 后台发通知
         NotificationHelper.notifyMessage(App.getInstance(), message);
     }

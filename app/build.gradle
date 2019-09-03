@@ -79,4 +79,7 @@ dependencies {
 //    api 'com.squareup.retrofit2:converter-gson:2.3.0'
 //    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
+    //implementation "com.afollestad.material-dialogs:core:0.9.4.5"
+    //implementation "com.afollestad.material-dialogs:commons:0.9.4.5"
+
 }

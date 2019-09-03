@@ -34,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (user2Model == null) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
             return;
         }
         logger.e("id=" + user2Model.getId() + ",name=" + user2Model.getUserName() + ",pwd=" + user2Model.getPassword());
@@ -42,6 +43,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(token)) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         } else {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             intent.putExtra("userId", userId);

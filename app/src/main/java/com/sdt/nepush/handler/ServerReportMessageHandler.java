@@ -28,13 +28,26 @@ public class ServerReportMessageHandler extends AbstractMessageHandler {
     @Override
     protected void action(AppMessage message) {
         logger.d("收到消息状态报告，message=" + message);
-        Message2Model message2Model = SQLite.select().from(Message2Model.class).where(
-                Message2Model_Table.msgId.eq(message.getHead().getMsgId())
-        ).querySingle();
-        if (message2Model != null) {
-            message2Model.setStatusReport(1);
-            message2Model.update();
-            CEventCenter.dispatchEvent(Events.REPORT_CHAT_MESSAGE_STATUS, 0, 0, message2Model);
+        if (message == null || message.getHead() == null) {
+            return;
+        }
+
+        if (message.getHead().getStatusReport() == 0) {
+            Message2Model message2Model = SQLite.select().from(Message2Model.class).where(
+                    Message2Model_Table.messageId.eq(message.getHead().getMessageId())).querySingle();
+            if (message2Model != null) {
+                message2Model.setStatusReport(-1);
+                message2Model.update();
+                CEventCenter.dispatchEvent(Events.REPORT_CHAT_MESSAGE_FAILED_STATUS, 0, 0, message2Model);
+            }
+        } else if (message.getHead().getStatusReport() == 1) {
+            Message2Model message2Model = SQLite.select().from(Message2Model.class).where(
+                    Message2Model_Table.messageId.eq(message.getHead().getMessageId())).querySingle();
+            if (message2Model != null) {
+                message2Model.setStatusReport(1);
+                message2Model.update();
+                CEventCenter.dispatchEvent(Events.REPORT_CHAT_MESSAGE_STATUS, 0, 0, message2Model);
+            }
         }
 
 

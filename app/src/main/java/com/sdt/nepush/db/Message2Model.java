@@ -1,5 +1,6 @@
 package com.sdt.nepush.db;
 
+import com.google.gson.Gson;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -13,9 +14,9 @@ public class Message2Model extends BaseModel {
     @PrimaryKey(autoincrement = true)
     private int id;
     @Column
-    protected String msgId;       // 消息id
+    protected String messageId;       // 消息id
     @Column
-    protected int msgType;        // 消息类型
+    protected int messageType;        // 消息类型
     @Column
     protected int msgContentType; // 消息内容乐行
     @Column
@@ -23,7 +24,7 @@ public class Message2Model extends BaseModel {
     @Column
     protected String toId;        // 接收者id
     @Column
-    protected long timestamp;     // 消息时间戳
+    protected long sendTime;     // 消息时间戳
     @Column
     protected int statusReport;   // 消息状态报告
     @Column
@@ -39,20 +40,20 @@ public class Message2Model extends BaseModel {
         this.id = id;
     }
 
-    public String getMsgId() {
-        return msgId;
+    public String getMessageId() {
+        return messageId;
     }
 
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
-    public int getMsgType() {
-        return msgType;
+    public int getMessageType() {
+        return messageType;
     }
 
-    public void setMsgType(int msgType) {
-        this.msgType = msgType;
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
     }
 
     public int getMsgContentType() {
@@ -79,12 +80,12 @@ public class Message2Model extends BaseModel {
         this.toId = toId;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getSendTime() {
+        return sendTime;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
     }
 
     public int getStatusReport() {
@@ -109,5 +110,10 @@ public class Message2Model extends BaseModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

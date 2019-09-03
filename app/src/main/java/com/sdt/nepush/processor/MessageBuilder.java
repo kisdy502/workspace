@@ -37,9 +37,9 @@ public class MessageBuilder {
                                              String toId, String extend, String content) {
         AppMessage message = new AppMessage();
         Head head = new Head();
-        head.setMsgId(msgId);
-        head.setMsgType(type);
-        head.setMsgContentType(subType);
+        head.setMessageId(msgId);
+        head.setMessageType(type);
+        head.setMessageContentType(subType);
         head.setFromId(fromId);
         head.setToId(toId);
         head.setExtend(extend);
@@ -58,12 +58,12 @@ public class MessageBuilder {
     public static AppMessage buildAppMessage(ContentMessage msg) {
         AppMessage message = new AppMessage();
         Head head = new Head();
-        head.setMsgId(msg.getMsgId());
-        head.setMsgType(msg.getMsgType());
-        head.setMsgContentType(msg.getMsgContentType());
+        head.setMessageId(msg.getMsgId());
+        head.setMessageType(msg.getMsgType());
+        head.setMessageContentType(msg.getMsgContentType());
         head.setFromId(msg.getFromId());
         head.setToId(msg.getToId());
-        head.setTimestamp(msg.getTimestamp());
+        head.setSendTime(msg.getSendTime());
         head.setExtend(msg.getExtend());
         message.setHead(head);
         message.setBody(msg.getContent());
@@ -80,13 +80,13 @@ public class MessageBuilder {
     public static AppMessage buildAppMessage(BaseMessage msg) {
         AppMessage message = new AppMessage();
         Head head = new Head();
-        head.setMsgId(msg.getMsgId());
-        head.setMsgType(msg.getMsgType());
-        head.setMsgContentType(msg.getMsgContentType());
+        head.setMessageId(msg.getMsgId());
+        head.setMessageType(msg.getMsgType());
+        head.setMessageContentType(msg.getMsgContentType());
         head.setFromId(msg.getFromId());
         head.setToId(msg.getToId());
         head.setExtend(msg.getExtend());
-        head.setTimestamp(msg.getTimestamp());
+        head.setSendTime(msg.getSendTime());
         message.setHead(head);
         message.setBody(msg.getContent());
 
@@ -102,17 +102,17 @@ public class MessageBuilder {
     public static TransMessageProtobuf.TransMessage.Builder getProtoBufMessageBuilderByAppMessage(AppMessage message) {
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
         TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgType(message.getHead().getMsgType());
+        headBuilder.setMsgType(message.getHead().getMessageType());
         headBuilder.setStatusReport(message.getHead().getStatusReport());
-        headBuilder.setMsgContentType(message.getHead().getMsgContentType());
-        if (!StringUtil.isEmpty(message.getHead().getMsgId()))
-            headBuilder.setMsgId(message.getHead().getMsgId());
+        headBuilder.setMsgContentType(message.getHead().getMessageContentType());
+        if (!StringUtil.isEmpty(message.getHead().getMessageId()))
+            headBuilder.setMsgId(message.getHead().getMessageId());
         if (!StringUtil.isEmpty(message.getHead().getFromId()))
             headBuilder.setFromId(message.getHead().getFromId());
         if (!StringUtil.isEmpty(message.getHead().getToId()))
             headBuilder.setToId(message.getHead().getToId());
-        if (message.getHead().getTimestamp() != 0)
-            headBuilder.setTimestamp(message.getHead().getTimestamp());
+        if (message.getHead().getSendTime() != 0)
+            headBuilder.setTimestamp(message.getHead().getSendTime());
         if (!StringUtil.isEmpty(message.getHead().getExtend()))
             headBuilder.setExtend(message.getHead().getExtend());
         if (!StringUtil.isEmpty(message.getBody()))
@@ -131,13 +131,13 @@ public class MessageBuilder {
         AppMessage message = new AppMessage();
         Head head = new Head();
         TransMessageProtobuf.MessageHeader protoHead = protobufMessage.getHeader();
-        head.setMsgType(protoHead.getMsgType());
+        head.setMessageType(protoHead.getMsgType());
         head.setStatusReport(protoHead.getStatusReport());
-        head.setMsgContentType(protoHead.getMsgContentType());
-        head.setMsgId(protoHead.getMsgId());
+        head.setMessageContentType(protoHead.getMsgContentType());
+        head.setMessageId(protoHead.getMsgId());
         head.setFromId(protoHead.getFromId());
         head.setToId(protoHead.getToId());
-        head.setTimestamp(protoHead.getTimestamp());
+        head.setSendTime(protoHead.getTimestamp());
         head.setExtend(protoHead.getExtend());
         message.setHead(head);
         message.setBody(protobufMessage.getBody());

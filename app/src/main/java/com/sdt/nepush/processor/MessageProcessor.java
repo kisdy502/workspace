@@ -2,14 +2,12 @@ package com.sdt.nepush.processor;
 
 import android.util.Log;
 
-import com.sdt.nepush.App;
-import com.sdt.nepush.ImsManager;
+import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.msg.AppMessage;
 import com.sdt.nepush.msg.BaseMessage;
 import com.sdt.nepush.msg.ContentMessage;
 import com.sdt.nepush.handler.IMessageHandler;
 import com.sdt.nepush.handler.MessageHandlerFactory;
-import com.sdt.nepush.notification.NotificationHelper;
 import com.sdt.nepush.util.CThreadPoolExecutor;
 
 
@@ -52,11 +50,11 @@ public class MessageProcessor implements IMessageProcessor {
             @Override
             public void run() {
                 try {
-                    IMessageHandler messageHandler = MessageHandlerFactory.getHandlerByMsgType(message.getHead().getMsgType());
+                    IMessageHandler messageHandler = MessageHandlerFactory.getHandlerByMsgType(message.getHead().getMessageType());
                     if (messageHandler != null) {
                         messageHandler.execute(message);
                     } else {
-                        Log.e(TAG, "未找到消息处理handler，msgType=" + message.getHead().getMsgType());
+                        Log.e(TAG, "未找到消息处理handler，messageType=" + message.getHead().getMessageType());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

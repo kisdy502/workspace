@@ -6,9 +6,9 @@ package com.sdt.nepush.event;
  * Created by Freddy on 2015/11/3.
  * chenshichao@outlook.com
  */
-public class CEvenObjPool extends ObjectPool<CEvent> {
+public class CEventObjPool extends ObjectPool<CEvent> {
 
-    public CEvenObjPool(int capacity) {
+    public CEventObjPool(int capacity) {
         super(capacity);
     }
 

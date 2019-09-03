@@ -15,14 +15,14 @@ import io.netty.util.internal.StringUtil;
  * Created by sdt13411 on 2019/7/17.
  */
 
-public class MsgTimeoutTimerManager {
+public class MsgTimeoutManager {
 
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
     private Map<String, MsgTimeoutTimer> mMsgTimeoutMap = new ConcurrentHashMap<>();
     private ImsClient imsClient;// ims客户端
 
-    public MsgTimeoutTimerManager(ImsClient imsClient) {
+    public MsgTimeoutManager(ImsClient imsClient) {
         this.imsClient = imsClient;
     }
 

@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:background="#EFEFEF"
         android:orientation="horizontal">
@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            app:default_icon="@drawable/selector_menu_descover"
+            app:default_icon="@drawable/selector_menu_conversation"
             app:menu_title="会话" />
 
         <com.sdt.nepush.widget.ImageTextView
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            app:default_icon="@drawable/selector_menu_descover"
+            app:default_icon="@drawable/selector_menu_contact"
             app:menu_title="通讯录" />
 
 

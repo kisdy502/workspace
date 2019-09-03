@@ -1,4 +1,4 @@
-package com.sdt.nepush;
+package com.sdt.nepush.ims;
 
 /**
  * <p>@ProjectName:     NettyChat</p>
@@ -49,9 +49,9 @@ public enum MessageType {
     MESSAGE_REQUEST_ADD_FRIEND(1011),
 
     /*
-     * 同意添加好友
+     * 同意/拒绝添加好友
      */
-    MESSAGE_AGREE_ADD_FRIEND(1012),
+    MESSAGE_AGREE_OR_REFUSE_ADD_FRIEND(1012),
 
 
     /*
@@ -64,11 +64,16 @@ public enum MessageType {
     */
     GET_OUTLINE_MESSAGE_LIST(1103),
 
-
     /*
     * 上报收到的离线消息列表
     */
     REPORT_RECEIVED_OUTLINE_MESSAGE_LIST(1105),
+
+
+    /*
+     * 发送失败的消息重发
+     */
+    RESEND_FAILED_MESSAGE_LIST(1107),
 
     /**
      * 单聊消息

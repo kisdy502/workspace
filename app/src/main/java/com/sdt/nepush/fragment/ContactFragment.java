@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.sdt.nepush.R;
 import com.sdt.nepush.activity.ChatActivity;
+import com.sdt.nepush.db.Conversation2Model;
 import com.sdt.nepush.db.User2Model;
 import com.sdt.nepush.db.UserRelation2Model;
 import com.sdt.nepush.db.UserRelation2Model_Table;
@@ -61,7 +62,8 @@ public class ContactFragment extends Fragment implements OnItemClickListener {
     public void onItemClick(RecyclerView parent, View itemView, int position) {
         String toUserId = friendList.get(position).getFriendName();
         Intent intent = new Intent(getActivity(), ChatActivity.class);
-        intent.putExtra("toUserId", toUserId);
+        intent.putExtra("toObject", toUserId);
+        intent.putExtra("conversationType", Conversation2Model.Conversation_Type_Single);
         startActivity(intent);
     }
 

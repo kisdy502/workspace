@@ -9,8 +9,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.ImsManager;
-import com.sdt.nepush.MessageType;
+import com.sdt.nepush.ims.ImsManager;
+import com.sdt.nepush.ims.MessageType;
 import com.sdt.nepush.db.Message2Model;
 import com.sdt.nepush.db.Message2Model_Table;
 import com.sdt.nepush.event.CEventCenter;
@@ -43,7 +43,7 @@ public class OutlineListMessageHandler extends AbstractMessageHandler {
                 sbMsgIds.append(msgId).append(",");
 
                 //避免插入重复数据
-                Message2Model dbMessage = SQLite.select().from(Message2Model.class).where(Message2Model_Table.msgId.eq(msgId)).querySingle();
+                Message2Model dbMessage = SQLite.select().from(Message2Model.class).where(Message2Model_Table.messageId.eq(msgId)).querySingle();
                 if (dbMessage != null) {
                     continue;
                 }
@@ -53,15 +53,15 @@ public class OutlineListMessageHandler extends AbstractMessageHandler {
                 String fromId = jsonObject.get("fromId").getAsString();
                 String toId = jsonObject.get("toId").getAsString();
                 long timestamp = jsonObject.get("sendTime").getAsLong();
-                int statusReport = jsonObject.get("messageReportStatus").getAsInt();
+                int statusReport = jsonObject.get("statusReport").getAsInt();
                 String content = jsonObject.get("content").getAsString();
                 Message2Model message2Model = new Message2Model();
-                message2Model.setMsgId(msgId);
+                message2Model.setMessageId(msgId);
                 message2Model.setFromId(fromId);
-                message2Model.setMsgType(msgType);
+                message2Model.setMessageType(msgType);
                 message2Model.setMsgContentType(msgContentType);
                 message2Model.setToId(toId);
-                message2Model.setTimestamp(timestamp);
+                message2Model.setSendTime(timestamp);
                 message2Model.setStatusReport(statusReport);
                 message2Model.setExtend("");
                 message2Model.setContent(content);

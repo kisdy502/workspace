@@ -12,8 +12,6 @@ import android.support.v4.app.NotificationCompat;
 import com.sdt.nepush.R;
 import com.sdt.nepush.msg.AppMessage;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-
 /**
  * <p>@author:          ${Author}</p>
  * <p>@date:            ${Date}</p>
@@ -26,7 +24,7 @@ public class NotificationHelper {
 
     public static void notifyMessage(Context context, AppMessage appMessage) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
-                NOTIFICATION_SERVICE);
+                Context.NOTIFICATION_SERVICE);
         if (notificationManager == null) {
             return;
         }
@@ -60,7 +58,7 @@ public class NotificationHelper {
     private static void createNotificationChannel(Context context, String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(
-                NOTIFICATION_SERVICE);
+                Context.NOTIFICATION_SERVICE);
         if (notificationManager == null) {
             return;
         }

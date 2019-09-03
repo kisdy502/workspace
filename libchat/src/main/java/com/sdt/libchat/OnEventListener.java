@@ -89,6 +89,7 @@ public interface OnEventListener {
     int getHeartbeatMsgType();
 
     int getHandshakeMsgType();
+
     /**
      * 强制退出
      *
@@ -101,6 +102,11 @@ public interface OnEventListener {
      */
     int getOutLineMsgListType();
 
+    /**
+     * 请求添加好友
+     */
+    int getRequestAddFriendType();
+
 
     /**
      * 获取应用层消息发送状态报告消息类型
@@ -111,6 +117,9 @@ public interface OnEventListener {
      * 获取应用层消息接收状态报告消息类型
      */
     int getClientReceivedReportMsgType();
+
+    //聊天消息类型
+    int getSingleChatMsgType();
 
     /**
      * 获取应用层消息发送超时重发次数

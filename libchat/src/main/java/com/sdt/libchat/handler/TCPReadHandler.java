@@ -38,24 +38,20 @@ public class TCPReadHandler extends ChannelInboundHandlerAdapter {
         }
 
         int msgType = transMessage.getHeader().getMsgType();
-        if (msgType == nettyClient.getServerSentReportMsgType()) {
-            int statusReport = transMessage.getHeader().getStatusReport();
-            logger.d(String.format("服务端状态报告:[%d],1成功0失败", statusReport));
-            if (statusReport == ImsConfig.DEFAULT_REPORT_SERVER_SEND_MSG_SUCCESSFUL) {
-                logger.d("收到服务端消息发送状态报告，message=" + transMessage + "，从超时管理器移除");
-                nettyClient.getMsgTimeoutTimerManager().remove(transMessage.getHeader().getMsgId());
-            }
-        } else {
-            logger.d("收到消息，message=" + transMessage);
+        if (msgType == nettyClient.getSingleChatMsgType()) {
+            logger.d("收到聊天消息，message=" + transMessage);
             TransMessageProtobuf.TransMessage receivedReportMsg =
                     MessageHelper.buildReceivedReportMsg(transMessage.getHeader().getMsgId(),
                             nettyClient.getClientReceivedReportMsgType());
             if (receivedReportMsg != null) {
                 nettyClient.sendMsg(receivedReportMsg);
             }
+            // 接收消息，由消息转发器转发到应用层
+            nettyClient.getMsgDispatcher().receivedMsg(transMessage);
+        } else {
+            ctx.fireChannelRead(msg);
         }
-        // 接收消息，由消息转发器转发到应用层
-        nettyClient.getMsgDispatcher().receivedMsg(transMessage);
+
     }
 
     @Override

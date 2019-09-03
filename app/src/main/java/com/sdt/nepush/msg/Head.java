@@ -13,37 +13,37 @@ package com.sdt.nepush.msg;
  */
 public class Head {
 
-    private String msgId;
-    private int msgType;
-    private int msgContentType;
+    private String messageId;
+    private int messageType;
+    private int messageContentType;
     private String fromId;
     private String toId;
-    private long timestamp;
+    private long sendTime;
     private int statusReport;
     private String extend;
 
-    public String getMsgId() {
-        return msgId;
+    public String getMessageId() {
+        return messageId;
     }
 
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
-    public int getMsgType() {
-        return msgType;
+    public int getMessageType() {
+        return messageType;
     }
 
-    public void setMsgType(int msgType) {
-        this.msgType = msgType;
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
     }
 
-    public int getMsgContentType() {
-        return msgContentType;
+    public int getMessageContentType() {
+        return messageContentType;
     }
 
-    public void setMsgContentType(int msgContentType) {
-        this.msgContentType = msgContentType;
+    public void setMessageContentType(int messageContentType) {
+        this.messageContentType = messageContentType;
     }
 
     public String getFromId() {
@@ -62,12 +62,12 @@ public class Head {
         this.toId = toId;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public long getSendTime() {
+        return sendTime;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
     }
 
     public int getStatusReport() {
@@ -89,12 +89,12 @@ public class Head {
     @Override
     public String toString() {
         return "Head{" +
-                "msgId='" + msgId + '\'' +
-                ", msgType=" + msgType +
-                ", msgContentType=" + msgContentType +
+                "messageId='" + messageId + '\'' +
+                ", messageType=" + messageType +
+                ", messageContentType=" + messageContentType +
                 ", fromId='" + fromId + '\'' +
                 ", toId='" + toId + '\'' +
-                ", timestamp=" + timestamp +
+                ", sendTime=" + sendTime +
                 ", statusReport=" + statusReport +
                 ", extend='" + extend + '\'' +
                 '}';

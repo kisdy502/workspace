@@ -7,20 +7,18 @@ import com.sdt.libcommon.esc.ILoggerFactory;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * Created by sdt13411 on 2019/7/17.
  */
 
-public class ForceLogoutHandler extends ChannelInboundHandlerAdapter {
+public class RequestAddFriendHandler extends ChannelInboundHandlerAdapter {
 
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
     private NettyClient nettyClient;
 
-    public ForceLogoutHandler(NettyClient nettyClient) {
+    public RequestAddFriendHandler(NettyClient nettyClient) {
         this.nettyClient = nettyClient;
     }
 
@@ -31,13 +29,12 @@ public class ForceLogoutHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        int transMessageType = transMessage.getHeader().getMsgType();
-        if (transMessageType == nettyClient.getForceLogoutMsgType()) {
-            logger.i("客户度被踢下线了,id=" + transMessage.getHeader().getMsgId());
+        int transMessageType = nettyClient.getRequestAddFriendType();
+        if (transMessageType == transMessage.getHeader().getMsgType()) {
+            logger.i("请求加好友:,id=" + transMessage.getHeader().getMsgId());
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
         } else {
             ctx.fireChannelRead(msg);
         }
     }
-
 }

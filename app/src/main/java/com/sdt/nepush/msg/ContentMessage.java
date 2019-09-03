@@ -30,7 +30,7 @@ public class ContentMessage extends BaseMessage {
         this.msgContentType = msgContentType;
         this.fromId = fromId;
         this.toId = toId;
-        this.timestamp = timestamp;
+        this.sendTime = timestamp;
         this.statusReport = statusReport;
         this.extend = extend;
         this.content = content;

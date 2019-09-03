@@ -21,7 +21,8 @@ import android.widget.Toast;
 import com.sdt.libchat.core.ImsClient;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.ImsManager;
+import com.sdt.nepush.App;
+import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.R;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
@@ -32,6 +33,7 @@ import com.sdt.nepush.fragment.MineFragment;
 import com.sdt.nepush.msg.SingleMessage;
 import com.sdt.nepush.net.ApiConstant;
 import com.sdt.nepush.util.CThreadPoolExecutor;
+import com.sdt.nepush.util.NotificationsUtils;
 import com.sdt.nepush.widget.ImageTextView;
 
 import java.lang.reflect.Method;
@@ -54,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private String userId, token;
 
     private static final String[] EVENTS = {
+            Events.HANDSHAKE_MESSAGE,
             Events.SYS_PUSH_MESSAGE,
             Events.CHAT_SINGLE_MESSAGE,
             Events.FORCE_LOGOUT_MESSAGE,
@@ -69,6 +72,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
         initToolBar();
         CEventCenter.registerEventListener(this, EVENTS);
+        initExtra();
+        handshake();
+
+        NotificationsUtils.checkNotificationOpend(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        logger.d("重新开始");
         initExtra();
         handshake();
     }
@@ -240,6 +253,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCEvent(String topic, int msgCode, int resultCode, Object obj) {
         switch (topic) {
+            case Events.HANDSHAKE_MESSAGE: {
+                break;
+            }
             case Events.SYS_PUSH_MESSAGE: {
                 final SingleMessage message = (SingleMessage) obj;
                 CThreadPoolExecutor.runOnMainThread(new Runnable() {
@@ -274,28 +290,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // TODO Auto-generated method stub
                                         Toast.makeText(HomeActivity.this, "确定了", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                                         HomeActivity.this.finish();
                                     }
                                 })
-                                /*.setNeutralButton("一般",new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,int which) {
-                                        // TODO Auto-generated method stub
-                                        Toast.makeText(HomeActivity.this,"我对海贼王不怎么感兴趣", Toast.LENGTH_SHORT).show();
-                                    }
-                                })*/
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // TODO Auto-generated method stub
                                         Toast.makeText(HomeActivity.this, "重新登录", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                                         HomeActivity.this.finish();
                                     }
-                                }).show();// show很关键
+                                }).show();
                     }
                 });
                 break;

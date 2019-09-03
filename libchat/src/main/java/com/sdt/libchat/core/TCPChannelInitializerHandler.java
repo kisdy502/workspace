@@ -1,12 +1,13 @@
 package com.sdt.libchat.core;
 
 import com.sdt.im.protobuf.TransMessageProtobuf;
-import com.sdt.libchat.core.NettyClient;
 import com.sdt.libchat.handler.ForceLogoutHandler;
 import com.sdt.libchat.handler.HandleFriendListHandler;
 import com.sdt.libchat.handler.HandleOutLineMessageListHandler;
 import com.sdt.libchat.handler.HeartbeatRespHandler;
 import com.sdt.libchat.handler.LoginAuthRespHandler;
+import com.sdt.libchat.handler.RequestAddFriendHandler;
+import com.sdt.libchat.handler.ServerReportMsgHandler;
 import com.sdt.libchat.handler.SystemPushMessageHandler;
 import com.sdt.libchat.handler.TCPReadHandler;
 
@@ -23,7 +24,6 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
  */
 
 public class TCPChannelInitializerHandler extends ChannelInitializer<Channel> {
-
 
     NettyClient nettyClient;
 
@@ -46,6 +46,8 @@ public class TCPChannelInitializerHandler extends ChannelInitializer<Channel> {
 
         // 握手认证消息响应处理handler
         pipeline.addLast(LoginAuthRespHandler.class.getSimpleName(), new LoginAuthRespHandler(nettyClient));
+        // 客户端发送消息给服务器，服务器报告给客户端，该消息已经接收的类型的消息
+        pipeline.addLast(ServerReportMsgHandler.class.getSimpleName(), new ServerReportMsgHandler(nettyClient));
         // 好友列表消息响应处理handler
         pipeline.addLast(HandleFriendListHandler.class.getSimpleName(), new HandleFriendListHandler(nettyClient));
         //离线消息处理
@@ -55,6 +57,7 @@ public class TCPChannelInitializerHandler extends ChannelInitializer<Channel> {
         // 接收消息处理handler
         pipeline.addLast(SystemPushMessageHandler.class.getSimpleName(), new SystemPushMessageHandler(nettyClient));
         pipeline.addLast(ForceLogoutHandler.class.getSimpleName(), new ForceLogoutHandler(nettyClient));
+        pipeline.addLast(RequestAddFriendHandler.class.getSimpleName(), new RequestAddFriendHandler(nettyClient));
 
         pipeline.addLast(TCPReadHandler.class.getSimpleName(), new TCPReadHandler(nettyClient));
     }

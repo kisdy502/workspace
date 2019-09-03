@@ -46,5 +46,4 @@ public class FriendListMessageHandler extends AbstractMessageHandler {
             CEventCenter.dispatchEvent(Events.LIST_FRIEND_MESSAGE, 0, 0, null);
         }
     }
-
 }

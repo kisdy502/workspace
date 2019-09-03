@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -73,11 +74,16 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public void onBindViewHolder(VH holder, int position) {
         Message2Model message2Model = chatMessageList.get(position);
-        holder.tvMessageTime.setText(DateUtil.timestampToDateString(message2Model.getTimestamp()));
+        holder.tvMessageTime.setText(DateUtil.timestampToDateString(message2Model.getSendTime()));
         holder.tvMessageText.setText(message2Model.getContent());
-        if (message2Model.getStatusReport() == 0 && message2Model.getFromId().equalsIgnoreCase(myId)) {
+        if (message2Model.getStatusReport() == -1) {
+            holder.imgSendFailed.setVisibility(View.VISIBLE);
+            holder.progressBar.setVisibility(View.GONE);
+        } else if (message2Model.getStatusReport() == 0 && message2Model.getFromId().equalsIgnoreCase(myId)) {
+            holder.imgSendFailed.setVisibility(View.GONE);
             holder.progressBar.setVisibility(View.VISIBLE);
         } else {
+            holder.imgSendFailed.setVisibility(View.GONE);
             holder.progressBar.setVisibility(View.GONE);
         }
         if (needShowMessageTime(position)) {
@@ -107,12 +113,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private TextView tvMessageTime;
         private TextView tvMessageText;
         private ProgressBar progressBar;
+        private ImageView imgSendFailed;
 
         public VH(View itemView) {
             super(itemView);
             tvMessageTime = (TextView) itemView.findViewById(R.id.datetime);
             tvMessageText = (TextView) itemView.findViewById(R.id.textView2);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
+            imgSendFailed = itemView.findViewById(R.id.img_msg_send_failed);
         }
     }
 
@@ -122,7 +130,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         }
         Message2Model message2Model = chatMessageList.get(position);
         Message2Model prevMessage2Model = chatMessageList.get(position - 1);
-        if (message2Model.getTimestamp() - prevMessage2Model.getTimestamp() > 1000 * 60) {
+        if (message2Model.getSendTime() - prevMessage2Model.getSendTime() > 1000 * 60) {
             return true;  //大于一分钟
         }
 

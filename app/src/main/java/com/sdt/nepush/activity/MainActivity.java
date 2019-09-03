@@ -22,8 +22,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.sdt.libchat.core.ImsClient;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.ImsManager;
-import com.sdt.nepush.MessageType;
+import com.sdt.nepush.ims.ImsManager;
+import com.sdt.nepush.ims.MessageType;
 import com.sdt.nepush.R;
 import com.sdt.nepush.db.Message2Model;
 import com.sdt.nepush.db.User2Model;
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         message.setMsgContentType(MessageType.MessageContentType.TEXT.getMsgContentType());
         message.setFromId(userId);
         message.setToId(toUserId);
-        message.setTimestamp(System.currentTimeMillis());
+        message.setSendTime(System.currentTimeMillis());
         message.setContent(edtSendText.getText().toString());
 
         MessageProcessor.getInstance().sendMsg(message);

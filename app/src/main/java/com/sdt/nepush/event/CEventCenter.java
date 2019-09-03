@@ -33,7 +33,7 @@ public class CEventCenter {
     /**
      * 事件对象池
      */
-    private static final CEvenObjPool mPool = new CEvenObjPool(5);
+    private static final CEventObjPool mPool = new CEventObjPool(5);
 
     /**
      * 注册/注销监听器

@@ -11,6 +11,7 @@
         android:id="@+id/activity_chat_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        app:theme="@style/toolbar_theme"
         android:background="?attr/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize" />
 

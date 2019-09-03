@@ -51,6 +51,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setTitle("Login");
     }
 
+
+    private void initData() {
+        User2Model user2Model = User2Model.getLoginUser();
+        if (user2Model == null) {
+            return;
+        }
+        edtUserName.setText(user2Model.getUserName());
+        edtPassword.setText(user2Model.getPassword());
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -118,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             intent.putExtra("userId", userName);
                             intent.putExtra("token", loginRestResp.getData());
                             startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(App.getInstance(), loginRestResp.getMessage(), Toast.LENGTH_SHORT).show();
                         }

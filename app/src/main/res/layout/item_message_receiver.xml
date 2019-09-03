@@ -79,7 +79,19 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/relativeLayout1"
             android:indeterminateBehavior="repeat"
-            android:indeterminateDrawable="@drawable/anim" />
+            android:indeterminateDrawable="@drawable/anim"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_msg_send_failed"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/relativeLayout1"
+            android:src="@drawable/ic_error_outline"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

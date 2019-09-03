@@ -31,7 +31,7 @@ public class HandleOutLineMessageListHandler extends ChannelInboundHandlerAdapte
 
         int transMessageType = nettyClient.getOutLineMsgListType();
         if (transMessageType == transMessage.getHeader().getMsgType()) {
-            logger.i("服务器下发离线消息列表:,id=" + transMessage.getBody());
+            logger.i("服务器下发离线消息列表:,id=" + transMessage.getHeader().getMsgId());
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
         } else {
             ctx.fireChannelRead(msg);

@@ -5,7 +5,7 @@ package com.sdt.nepush.net;
  */
 
 public class ApiConstant {
-    public static final String BASE_URL = "http://192.168.66.66:8989";
+    public static final String BASE_URL = "http://192.168.66.81:8989";
 
-    public static final String HOSTJSON = "[{\"host\":\"192.168.66.66\", \"port\":8866}]";
+    public static final String HOSTJSON = "[{\"host\":\"192.168.66.81\", \"port\":8866}]";
 }

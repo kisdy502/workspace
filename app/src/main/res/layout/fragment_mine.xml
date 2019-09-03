@@ -6,8 +6,42 @@
     android:layout_height="match_parent"
     tools:context="com.sdt.nepush.activity.UCenterActivity">
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/base_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="个人中心" />
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="我的信息:"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/extend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#ECECEC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/base_layout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="扩展内容" />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

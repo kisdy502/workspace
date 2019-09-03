@@ -16,8 +16,8 @@ import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
 import com.sdt.nepush.App;
-import com.sdt.nepush.ImsManager;
-import com.sdt.nepush.MessageType;
+import com.sdt.nepush.ims.ImsManager;
+import com.sdt.nepush.ims.MessageType;
 import com.sdt.nepush.R;
 import com.sdt.nepush.bean.SearchRestResp;
 import com.sdt.nepush.bean.UserBean;
@@ -162,9 +162,9 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
                         MessageType.MESSAGE_REQUEST_ADD_FRIEND.getMsgType(),
                         0,
                         User2Model.getLoginUser().getUserName(),
-                        "",
                         userBean.getName(),
-                        ""
+                        "friend",
+                        "我是" + userBean.getName() + ",可以加个好友吗"
                 );
         TransMessageProtobuf.TransMessage transMessage =
                 MessageBuilder.getProtoBufMessageBuilderByAppMessage(appMessage).build();

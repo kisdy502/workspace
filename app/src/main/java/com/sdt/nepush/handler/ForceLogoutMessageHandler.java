@@ -4,7 +4,7 @@ package com.sdt.nepush.handler;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
 import com.sdt.nepush.App;
-import com.sdt.nepush.ImsManager;
+import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
 import com.sdt.nepush.msg.AppMessage;

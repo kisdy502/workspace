@@ -27,12 +27,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        FlowManager.init(this);      //初始化DBFLOW
         logger.i("----------------");
         logger.i("-");
         logger.i("-App onCreate");
         logger.i("-");
         logger.i("----------------");
+        FlowManager.init(this);      //初始化DBFLOW
         NotificationHelper.initNotificationChannel(instance);
 
     }
