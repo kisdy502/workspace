@@ -11,41 +11,56 @@
         android:id="@+id/activity_chat_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:theme="@style/toolbar_theme"
         android:background="?attr/colorPrimaryDark"
-        android:minHeight="?attr/actionBarSize" />
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/toolbar_theme" />
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true">
-
-
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="发送" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottombar_bg"
+        android:gravity="center_vertical">
 
         <EditText
             android:id="@+id/edt_message"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/btn_send"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:hint="请输入消息内容" />
-    </RelativeLayout>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/chat_bottombar_input"
+            android:hint="请输入消息内容"
+            android:inputType="textMultiLine"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="42.0dip"
+            android:layout_height="34.0dip"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/chat_bottombar_btn_selector"
+            android:shadowColor="#ff568ab5"
+            android:shadowDx="0.0"
+            android:shadowDy="-1.0"
+            android:shadowRadius="0.2"
+            android:text="发送"
+            android:textColor="@color/send_btn_textcolor"
+            android:textSize="14.0sp" />
+
+
+    </LinearLayout>
 
     <com.sdt.nepush.widget.recycler.XRecyclerView
         android:id="@+id/rv_message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_layout"
-        android:layout_below="@id/activity_chat_toolbar"/>
+        android:layout_below="@id/activity_chat_toolbar" />
 
 </RelativeLayout>

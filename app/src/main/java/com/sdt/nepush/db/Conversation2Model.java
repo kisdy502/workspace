@@ -28,6 +28,10 @@ public class Conversation2Model extends BaseModel {
     private String createUser;
     @Column
     private String toObject;        //单聊，群聊，推送消息 会话
+    @Column
+    private String lastMessageContent;
+    @Column
+    private String unreadMessageCount;
 
     public int getId() {
         return id;
@@ -59,6 +63,22 @@ public class Conversation2Model extends BaseModel {
 
     public void setToObject(String toObject) {
         this.toObject = toObject;
+    }
+
+    public String getLastMessageContent() {
+        return lastMessageContent;
+    }
+
+    public void setLastMessageContent(String lastMessageContent) {
+        this.lastMessageContent = lastMessageContent;
+    }
+
+    public String getUnreadMessageCount() {
+        return unreadMessageCount;
+    }
+
+    public void setUnreadMessageCount(String unreadMessageCount) {
+        this.unreadMessageCount = unreadMessageCount;
     }
 
     @Nullable
