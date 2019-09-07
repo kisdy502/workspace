@@ -36,8 +36,6 @@ public class TestMsgHandler extends ChannelInboundHandlerAdapter {
 
                 case WRITER_IDLE: {
                     logger.d("WRITER_IDLE");
-                    TransMessageProtobuf.TransMessage heartbeatMsg = getHeartbeatMsg();
-                    ctx.writeAndFlush(heartbeatMsg);
                     break;
                 }
             }
@@ -47,7 +45,7 @@ public class TestMsgHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null) {
             return;
         }
         logger.d("read msg:" + transMessage);
@@ -57,8 +55,6 @@ public class TestMsgHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         logger.e("TestMsgHandler channelActive()");
-        TransMessageProtobuf.TransMessage handshakeMsg = getHandshakeMsg();
-        ctx.writeAndFlush(handshakeMsg);
     }
 
 
@@ -77,33 +73,9 @@ public class TestMsgHandler extends ChannelInboundHandlerAdapter {
 
     }
 
-    public TransMessageProtobuf.TransMessage getHandshakeMsg() {
-        TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setMsgType(1001);
-
-        headBuilder.setFromId(clientTest.uid);
-        headBuilder.setTimestamp(System.currentTimeMillis());
-
-        JSONObject jsonObj = new JSONObject();
-        jsonObj.put("token", clientTest.token);
-        headBuilder.setExtend(jsonObj.toString());
-        builder.setHeader(headBuilder.build());
-
-        return builder.build();
-    }
 
 
-    public TransMessageProtobuf.TransMessage getHeartbeatMsg() {
-        TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setMsgType(1002);
-        headBuilder.setFromId(clientTest.uid);
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder.build());
-        return builder.build();
-    }
+
+
 
 }

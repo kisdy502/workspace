@@ -59,9 +59,22 @@ public interface ImsClient {
      */
     int getRequestAddFriendType();
 
+    /**
+     * 同意添加好友结果消息
+     */
+    int getAgreeAddFriendType();
+
+    /**
+     * 拒绝添加好友结果消息
+     */
+    int getRefuseAddFriendType();
+
     int getServerSentReportMsgType();
 
     int getClientReceivedReportMsgType();
+
+
+    int getCreateGroupResultMgsType();
 
     //聊天消息类型
     int getSingleChatMsgType();

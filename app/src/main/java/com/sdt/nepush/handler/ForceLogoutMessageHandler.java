@@ -16,13 +16,11 @@ public class ForceLogoutMessageHandler extends AbstractMessageHandler {
 
     @Override
     protected void action(AppMessage message) {
-        logger.d("下线通知:message=" + message);
-        if (message != null && message.getHead() != null) {
-            ImsManager.getInstance().close();
-            CEventCenter.dispatchEvent(Events.FORCE_LOGOUT_MESSAGE, 0, 0, null);
-            //TODO 什么时候需要发送到通知,逻辑
-            NotificationHelper.notifyMessage(App.getInstance(), message);
-        }
+        logger.d("下线通知:message=" + message.toString());
+        ImsManager.getInstance().close();
+        CEventCenter.dispatchEvent(Events.FORCE_LOGOUT_MESSAGE, 0, 0, null);
+        //TODO 什么时候需要发送到通知,逻辑
+        NotificationHelper.notifyMessage(App.getInstance(), message);
     }
 
 }

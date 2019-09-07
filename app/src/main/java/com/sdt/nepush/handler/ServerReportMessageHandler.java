@@ -27,22 +27,18 @@ public class ServerReportMessageHandler extends AbstractMessageHandler {
 
     @Override
     protected void action(AppMessage message) {
-        logger.d("收到消息状态报告，message=" + message);
-        if (message == null || message.getHead() == null) {
-            return;
-        }
-
-        if (message.getHead().getStatusReport() == 0) {
+        logger.d("收到消息状态报告，message=" + message.toString());
+        if (message.getStatusReport() == 0) {
             Message2Model message2Model = SQLite.select().from(Message2Model.class).where(
-                    Message2Model_Table.messageId.eq(message.getHead().getMessageId())).querySingle();
+                    Message2Model_Table.messageId.eq(message.getMsgId())).querySingle();
             if (message2Model != null) {
                 message2Model.setStatusReport(-1);
                 message2Model.update();
                 CEventCenter.dispatchEvent(Events.REPORT_CHAT_MESSAGE_FAILED_STATUS, 0, 0, message2Model);
             }
-        } else if (message.getHead().getStatusReport() == 1) {
+        } else if (message.getStatusReport() == 1) {
             Message2Model message2Model = SQLite.select().from(Message2Model.class).where(
-                    Message2Model_Table.messageId.eq(message.getHead().getMessageId())).querySingle();
+                    Message2Model_Table.messageId.eq(message.getMsgId())).querySingle();
             if (message2Model != null) {
                 message2Model.setStatusReport(1);
                 message2Model.update();

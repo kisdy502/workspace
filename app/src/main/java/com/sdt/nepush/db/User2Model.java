@@ -16,8 +16,13 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = NetPush.class)
 public class User2Model extends BaseModel {
 
+    public final static int CURRENT_TAG = 1;
+    public final static int NOT_CURRENT_TAG = 0;
+
     @PrimaryKey(autoincrement = true)
     private int id;
+    @Column
+    private Long userId;
     @Column
     private String userName;
     @Column
@@ -26,6 +31,8 @@ public class User2Model extends BaseModel {
     private String token;
     @Column
     private long timeStamp;
+    @Column
+    private int currentUserTag = NOT_CURRENT_TAG; //
 
     public int getId() {
         return id;
@@ -33,6 +40,15 @@ public class User2Model extends BaseModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -67,9 +83,18 @@ public class User2Model extends BaseModel {
         this.timeStamp = timeStamp;
     }
 
+    public int getCurrentUserTag() {
+        return currentUserTag;
+    }
+
+    public void setCurrentUserTag(int currentUserTag) {
+        this.currentUserTag = currentUserTag;
+    }
+
     public static User2Model getLoginUser() {
         return SQLite.select().from(User2Model.class)
-                .where(User2Model_Table.timeStamp.lessThanOrEq(System.currentTimeMillis()))
+                .where(User2Model_Table.timeStamp.lessThanOrEq(System.currentTimeMillis()),
+                        User2Model_Table.currentUserTag.eq(CURRENT_TAG))
                 .orderBy(OrderBy.fromNameAlias(NameAlias.of("id")))
                 .groupBy(NameAlias.of("id"))
                 .querySingle();

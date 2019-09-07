@@ -27,7 +27,7 @@ public class MsgTimeoutManager {
     }
 
     public void add(TransMessageProtobuf.TransMessage msg) {
-        if (msg == null || msg.getHeader() == null) {
+        if (msg == null) {
             return;
         }
 
@@ -36,21 +36,21 @@ public class MsgTimeoutManager {
 
         int clientReceivedReportMsgType = imsClient.getClientReceivedReportMsgType();
         TransMessageProtobuf.TransMessage handshakeMsg = imsClient.getHandshakeMsg();
-        if (handshakeMsg != null && handshakeMsg.getHeader() != null) {
-            handshakeMsgType = handshakeMsg.getHeader().getMsgType();
+        if (handshakeMsg != null ) {
+            handshakeMsgType = handshakeMsg.getMsgType();
         }
         TransMessageProtobuf.TransMessage heartbeatMsg = imsClient.getHeartbeatMsg();
-        if (heartbeatMsg != null && heartbeatMsg.getHeader() != null) {
-            heartbeatMsgType = heartbeatMsg.getHeader().getMsgType();
+        if (heartbeatMsg != null ) {
+            heartbeatMsgType = heartbeatMsg.getMsgType();
         }
 
-        int msgType = msg.getHeader().getMsgType();
+        int msgType = msg.getMsgType();
         // 握手消息、心跳消息、客户端返回的状态报告消息，不用重发。
         if (msgType == handshakeMsgType || msgType == heartbeatMsgType || msgType == clientReceivedReportMsgType) {
             return;
         }
 
-        String msgId = msg.getHeader().getMsgId();
+        String msgId = msg.getMsgId();
         if (!mMsgTimeoutMap.containsKey(msgId)) {
             MsgTimeoutTimer timer = new MsgTimeoutTimer(imsClient, msg);
             mMsgTimeoutMap.put(msgId, timer);

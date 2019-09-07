@@ -27,7 +27,7 @@ public class Conversation2Model extends BaseModel {
     @Column
     private String createUser;
     @Column
-    private String toObject;        //单聊，群聊，推送消息 会话
+    private Long toObjectId;            //单聊，群聊，推送消息 会话
     @Column
     private String lastMessageContent;
     @Column
@@ -57,12 +57,12 @@ public class Conversation2Model extends BaseModel {
         this.createUser = createUser;
     }
 
-    public String getToObject() {
-        return toObject;
+    public Long getToObjectId() {
+        return toObjectId;
     }
 
-    public void setToObject(String toObject) {
-        this.toObject = toObject;
+    public void setToObjectId(Long toObject) {
+        this.toObjectId = toObject;
     }
 
     public String getLastMessageContent() {
@@ -82,10 +82,10 @@ public class Conversation2Model extends BaseModel {
     }
 
     @Nullable
-    public static Conversation2Model queryConversion(String createUser, String toObject, int conversationType) {
+    public static Conversation2Model queryConversion(String createUser, Long toObjectId, int conversationType) {
         return SQLite.select().from(Conversation2Model.class).where(
                 Conversation2Model_Table.createUser.eq(createUser),
-                Conversation2Model_Table.toObject.eq(toObject),
+                Conversation2Model_Table.toObjectId.eq(toObjectId),
                 Conversation2Model_Table.conversationType.eq(conversationType)
         ).querySingle();
     }

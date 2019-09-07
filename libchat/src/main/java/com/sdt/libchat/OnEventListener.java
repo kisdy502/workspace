@@ -107,6 +107,16 @@ public interface OnEventListener {
      */
     int getRequestAddFriendType();
 
+    /**
+     * 同意添加好友结果消息
+     */
+    int getAgreeAddFriendType();
+
+    /**
+     * 拒绝添加好友结果消息
+     */
+    int getRefuseAddFriendType();
+
 
     /**
      * 获取应用层消息发送状态报告消息类型
@@ -117,6 +127,12 @@ public interface OnEventListener {
      * 获取应用层消息接收状态报告消息类型
      */
     int getClientReceivedReportMsgType();
+
+
+    /**
+     * 群组创建请求返回消息类型
+     */
+    int getCreateGroupResultMgsType();
 
     //聊天消息类型
     int getSingleChatMsgType();

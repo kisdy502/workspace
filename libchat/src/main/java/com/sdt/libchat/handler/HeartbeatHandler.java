@@ -67,7 +67,7 @@ public class HeartbeatHandler extends ChannelInboundHandlerAdapter {
                 if (heartbeatMsg == null) {
                     return;
                 }
-                logger.d("发送心跳,id=" + heartbeatMsg.getHeader().getMsgId() + "心跳间隔:" + nettyClient.getHeartbeatInterval() / 1000 + "s\n");
+                logger.d("发送心跳,id=" + heartbeatMsg.getMsgId() + "心跳间隔:" + nettyClient.getHeartbeatInterval() / 1000 + "s\n");
                 nettyClient.sendMsg(heartbeatMsg, false);
             }
         }

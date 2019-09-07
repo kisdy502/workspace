@@ -2,12 +2,10 @@ package com.sdt.nepush.handler;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.bean.FriendBean;
-import com.sdt.nepush.db.UserRelation2Model;
-import com.sdt.nepush.db.UserRelation2Model_Table;
+import com.sdt.nepush.bean.Friend;
+import com.sdt.nepush.db.Friend2Model;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
 import com.sdt.nepush.msg.AppMessage;
@@ -21,29 +19,30 @@ public class FriendListMessageHandler extends AbstractMessageHandler {
 
     @Override
     protected void action(AppMessage message) {
-        logger.d("好友列表:message=" + message);
-        if (message != null && message.getHead() != null) {
-            String friendListString = message.getBody();
+        logger.d("好友列表:message=" + message.toString());
+        String friendListString = message.getContent();
 
-            Type type = new TypeToken<List<FriendBean>>() {
-            }.getType();
-            List<FriendBean> friendBeanList = new Gson().fromJson(friendListString, type);
-            if (friendBeanList != null && friendBeanList.size() > 0) {
-                for (FriendBean friendBean : friendBeanList) {
-                    UserRelation2Model userRelation2Model = SQLite.select().from(UserRelation2Model.class)
-                            .where(UserRelation2Model_Table.relationId.eq(friendBean.getId()))
-                            .querySingle();
-                    if (userRelation2Model == null) {
-                        userRelation2Model = new UserRelation2Model();
-                        userRelation2Model.setRelationId(friendBean.getId());
-                        userRelation2Model.setMyName(friendBean.getMyName());
-                        userRelation2Model.setFriendName(friendBean.getFriendName());
-                        userRelation2Model.save();
-                    }
+        Type type = new TypeToken<List<Friend>>() {
+        }.getType();
+        List<Friend> friendBeanList = new Gson().fromJson(friendListString, type);
+        if (friendBeanList != null && friendBeanList.size() > 0) {
+            for (Friend friendBean : friendBeanList) {
+                Friend2Model friend2Model = Friend2Model.findFriendByFriendId(friendBean.getFriendId());
+                if (friend2Model == null) {
+                    friend2Model = new Friend2Model();
+                    friend2Model.setMyId(friendBean.getMyId());
+                    friend2Model.setFriendId(friendBean.getFriendId());
+                    friend2Model.setUserName(friendBean.getName());
+                    friend2Model.setTimeStamp(System.currentTimeMillis());
+                    friend2Model.save();
+                } else {
+                    friend2Model.setUserName(friendBean.getName());
+                    friend2Model.setTimeStamp(System.currentTimeMillis());
+                    friend2Model.update();
                 }
             }
-
-            CEventCenter.dispatchEvent(Events.LIST_FRIEND_MESSAGE, 0, 0, null);
         }
+
+        CEventCenter.dispatchEvent(Events.LIST_FRIEND_MESSAGE, 0, 0, null);
     }
 }

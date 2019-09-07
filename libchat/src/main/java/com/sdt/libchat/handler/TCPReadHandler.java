@@ -33,15 +33,15 @@ public class TCPReadHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null) {
             return;
         }
 
-        int msgType = transMessage.getHeader().getMsgType();
+        int msgType = transMessage.getMsgType();
         if (msgType == nettyClient.getSingleChatMsgType()) {
             logger.d("收到聊天消息，message=" + transMessage);
             TransMessageProtobuf.TransMessage receivedReportMsg =
-                    MessageHelper.buildReceivedReportMsg(transMessage.getHeader().getMsgId(),
+                    MessageHelper.buildReceivedReportMsg(transMessage,
                             nettyClient.getClientReceivedReportMsgType());
             if (receivedReportMsg != null) {
                 nettyClient.sendMsg(receivedReportMsg);

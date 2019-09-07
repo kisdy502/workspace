@@ -63,7 +63,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     @Override
     public void onBindViewHolder(VH holder, int position) {
         Conversation2Model conversation2Model = conversation2ModelList.get(position);
-        holder.tvConversationName.setText(conversation2Model.getToObject());
+        holder.tvConversationName.setText(conversation2Model.getToObjectId() + "");
     }
 
     @Override

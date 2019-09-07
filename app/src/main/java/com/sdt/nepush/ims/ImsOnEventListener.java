@@ -23,10 +23,10 @@ import java.util.UUID;
  */
 public class ImsOnEventListener implements OnEventListener {
 
-    private String userId;
+    private Long userId;
     private String token;
 
-    public ImsOnEventListener(String userId, String token) {
+    public ImsOnEventListener(Long userId, String token) {
         this.userId = userId;
         this.token = token;
     }
@@ -66,42 +66,34 @@ public class ImsOnEventListener implements OnEventListener {
     @Override
     public TransMessageProtobuf.TransMessage getHandshakeMsg() {
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setMsgType(MessageType.HANDSHAKE.getMsgType());
-        headBuilder.setFromId(userId);
-        headBuilder.setTimestamp(System.currentTimeMillis());
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setMsgType(MessageType.HANDSHAKE.getMsgType());
+        builder.setFromId(userId);
+        builder.setSendTime(System.currentTimeMillis());
 
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("token", token);
-        headBuilder.setExtend(jsonObj.toString());
-        builder.setHeader(headBuilder.build());
+        builder.setExtend(jsonObj.toString());
         return builder.build();
     }
 
     @Override
     public TransMessageProtobuf.TransMessage getHeartbeatMsg() {
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setMsgType(MessageType.HEARTBEAT.getMsgType());
-        headBuilder.setFromId(userId);
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder.build());
-
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setMsgType(MessageType.HEARTBEAT.getMsgType());
+        builder.setFromId(userId);
+        builder.setSendTime(System.currentTimeMillis());
         return builder.build();
     }
 
     @Override
     public TransMessageProtobuf.TransMessage getFriendListMsg() {
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setMsgType(MessageType.GET_USER_FRIEND_LIST.getMsgType());
-        headBuilder.setFromId(userId);
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder.build());
-
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setMsgType(MessageType.GET_USER_FRIEND_LIST.getMsgType());
+        builder.setFromId(userId);
+        builder.setSendTime(System.currentTimeMillis());
         return builder.build();
     }
 
@@ -136,6 +128,16 @@ public class ImsOnEventListener implements OnEventListener {
     }
 
     @Override
+    public int getAgreeAddFriendType() {
+        return MessageType.MESSAGE_AGREE_ADD_FRIEND_RESULT.getMsgType();
+    }
+
+    @Override
+    public int getRefuseAddFriendType() {
+        return MessageType.MESSAGE_REFUSE_ADD_FRIEND_RESULT.getMsgType();
+    }
+
+    @Override
     public int getServerSentReportMsgType() {
         return MessageType.SERVER_MSG_SENT_STATUS_REPORT.getMsgType();
     }
@@ -143,6 +145,11 @@ public class ImsOnEventListener implements OnEventListener {
     @Override
     public int getClientReceivedReportMsgType() {
         return MessageType.CLIENT_MSG_RECEIVED_STATUS_REPORT.getMsgType();
+    }
+
+    @Override
+    public int getCreateGroupResultMgsType() {
+        return MessageType.MESSAGE_REQUEST_CREATE_GROUP_RESULT.getMsgType();
     }
 
     @Override

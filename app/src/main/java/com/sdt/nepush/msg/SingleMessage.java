@@ -1,6 +1,5 @@
 package com.sdt.nepush.msg;
 
-
 import com.sdt.nepush.util.StringUtil;
 
 /**
@@ -14,7 +13,7 @@ import com.sdt.nepush.util.StringUtil;
  * <p>@date:            2019/04/10 03:24</p>
  * <p>@email:           chenshichao@outlook.com</p>
  */
-public class SingleMessage extends ContentMessage implements Cloneable {
+public class SingleMessage extends AppMessage implements Cloneable {
 
     @Override
     public int hashCode() {

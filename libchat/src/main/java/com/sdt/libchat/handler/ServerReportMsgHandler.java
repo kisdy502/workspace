@@ -26,17 +26,17 @@ public class ServerReportMsgHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null ) {
             return;
         }
 
-        int msgType = transMessage.getHeader().getMsgType();
+        int msgType = transMessage.getMsgType();
         if (msgType == nettyClient.getServerSentReportMsgType()) {
-            int statusReport = transMessage.getHeader().getStatusReport();
+            int statusReport = transMessage.getStatusReport();
             logger.d(String.format("服务端状态报告:[%d],1成功0失败", statusReport));
             if (statusReport == ImsConfig.DEFAULT_REPORT_SERVER_SEND_MSG_SUCCESSFUL) {
                 logger.d("收到服务端消息发送状态报告，message=" + transMessage + "，从超时管理器移除");
-                nettyClient.getMsgTimeoutTimerManager().remove(transMessage.getHeader().getMsgId());
+                nettyClient.getMsgTimeoutTimerManager().remove(transMessage.getMsgId());
                 nettyClient.getMsgDispatcher().receivedMsg(transMessage);
             }
         } else {

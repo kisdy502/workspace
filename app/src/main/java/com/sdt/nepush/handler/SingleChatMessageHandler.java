@@ -31,17 +31,17 @@ public class SingleChatMessageHandler extends AbstractMessageHandler {
     @Override
     protected void action(AppMessage message) {
 
-        logger.d(TAG, "收到单聊消息，message=" + message);
+        logger.d(TAG, "收到单聊消息，message=" + message.toString());
 
         SingleMessage msg = new SingleMessage();
-        msg.setMsgId(message.getHead().getMessageId());
-        msg.setMsgType(message.getHead().getMessageType());
-        msg.setMsgContentType(message.getHead().getMessageContentType());
-        msg.setFromId(message.getHead().getFromId());
-        msg.setToId(message.getHead().getToId());
-        msg.setSendTime(message.getHead().getSendTime());
-        msg.setExtend(message.getHead().getExtend());
-        msg.setContent(message.getBody());
+        msg.setMsgId(message.getMsgId());
+        msg.setMsgType(message.getMsgType());
+        msg.setMsgContentType(message.getMsgContentType());
+        msg.setFromId(message.getFromId());
+        msg.setToId(message.getToId());
+        msg.setSendTime(message.getSendTime());
+        msg.setExtend(message.getExtend());
+        msg.setContent(message.getContent());
 
         Message2Model message2Model = saveMessage2Db(msg);
 
@@ -59,9 +59,9 @@ public class SingleChatMessageHandler extends AbstractMessageHandler {
         message2Model.setFromId(message.getFromId());
         message2Model.setToId(message.getToId());
         message2Model.setSendTime(message.getSendTime());
-        message2Model.setContent(message.getContent());
         message2Model.setStatusReport(message.getStatusReport());
         message2Model.setExtend(message.getExtend());
+        message2Model.setContent(message.getContent());
         message2Model.save();
         return message2Model;
     }

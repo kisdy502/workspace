@@ -14,7 +14,7 @@ import com.sdt.nepush.util.StringUtil;
  * <p>@date:            2019/04/10 00:06</p>
  * <p>@email:           chenshichao@outlook.com</p>
  */
-public class ContentMessage extends BaseMessage {
+public class ContentMessage extends AppMessage {
 
     protected boolean isRead;
     protected boolean isPlaying;
@@ -23,7 +23,7 @@ public class ContentMessage extends BaseMessage {
     public ContentMessage() {
     }
 
-    public ContentMessage(String msgId, int msgType, int msgContentType, String fromId, String toId,
+    public ContentMessage(String msgId, int msgType, int msgContentType, Long fromId, Long toId,
                           long timestamp, int statusReport, String extend, String content) {
         this.msgId = msgId;
         this.msgType = msgType;

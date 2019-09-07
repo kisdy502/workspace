@@ -46,6 +46,7 @@
         <activity android:name=".activity.HandleAddFriendActivity">
 
         </activity>
+        <activity android:name=".activity.CreateGroupActivity"></activity>
     </application>
 
 </manifest>

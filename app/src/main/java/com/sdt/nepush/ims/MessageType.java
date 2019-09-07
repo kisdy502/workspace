@@ -26,7 +26,13 @@ public enum MessageType {
     /*
      * 心跳消息
      */
-    HEARTBEAT(1002),
+    HEARTBEAT(1003),
+
+    /*
+     * 客户端强制下线，在其它地方登录，被踢下线
+     */
+    FORCE_CLIENT_LOGOUT(1005),
+
 
     /*
      * 客户端提交的消息接收状态报告
@@ -39,11 +45,6 @@ public enum MessageType {
     SERVER_MSG_SENT_STATUS_REPORT(1010),
 
     /*
-     * 客户端强制下线，在其它地方登录，被踢下线
-     */
-    FORCE_CLIENT_LOGOUT(1003),
-
-    /*
      * 添加好友
      */
     MESSAGE_REQUEST_ADD_FRIEND(1011),
@@ -52,6 +53,16 @@ public enum MessageType {
      * 同意/拒绝添加好友
      */
     MESSAGE_AGREE_OR_REFUSE_ADD_FRIEND(1012),
+
+    /*
+     * 同意好友请求通知
+     */
+    MESSAGE_AGREE_ADD_FRIEND_RESULT(1013),
+
+    /*
+     * 拒绝好友请求通知
+     */
+    MESSAGE_REFUSE_ADD_FRIEND_RESULT(1015),
 
 
     /*
@@ -74,6 +85,16 @@ public enum MessageType {
      * 发送失败的消息重发
      */
     RESEND_FAILED_MESSAGE_LIST(1107),
+
+    /*
+     * 创建群
+     */
+    MESSAGE_REQUEST_CREATE_GROUP(1109),
+
+    /*
+     * 创建群结果
+     */
+    MESSAGE_REQUEST_CREATE_GROUP_RESULT(1120),
 
     /**
      * 单聊消息

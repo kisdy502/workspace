@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,8 +21,6 @@ import android.widget.Toast;
 import com.sdt.libchat.core.ImsClient;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
-import com.sdt.nepush.App;
-import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.R;
 import com.sdt.nepush.event.CEventCenter;
 import com.sdt.nepush.event.Events;
@@ -30,6 +28,7 @@ import com.sdt.nepush.event.I_CEventListener;
 import com.sdt.nepush.fragment.ContactFragment;
 import com.sdt.nepush.fragment.ConversationFragment;
 import com.sdt.nepush.fragment.MineFragment;
+import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.msg.SingleMessage;
 import com.sdt.nepush.net.ApiConstant;
 import com.sdt.nepush.util.CThreadPoolExecutor;
@@ -53,7 +52,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentManager mFragmentManager;
     private Toolbar mToolbar;
     private ProgressDialog dialog;
-    private String userId, token;
+    private Long userId;
+    private String token;
 
     private static final String[] EVENTS = {
             Events.HANDSHAKE_MESSAGE,
@@ -73,9 +73,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initToolBar();
         CEventCenter.registerEventListener(this, EVENTS);
         initExtra();
+        NotificationsUtils.checkNotificationOpend(this);
+
         handshake();
 
-        NotificationsUtils.checkNotificationOpend(this);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initExtra() {
-        userId = getIntent().getStringExtra("userId");
+        userId = getIntent().getLongExtra("userId", 0L);
         token = getIntent().getStringExtra("token");
     }
 
@@ -140,6 +141,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else if (item.getItemId() == R.id.action_item2) {
                     startActivity(new Intent(HomeActivity.this, AddFriendActivity.class));
+                } else if (item.getItemId() == R.id.action_item3) {
+                    startActivity(new Intent(HomeActivity.this, CreateGroupActivity.class));
                 }
                 return true;
             }

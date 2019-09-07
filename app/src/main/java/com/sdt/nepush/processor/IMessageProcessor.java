@@ -2,8 +2,6 @@ package com.sdt.nepush.processor;
 
 
 import com.sdt.nepush.msg.AppMessage;
-import com.sdt.nepush.msg.BaseMessage;
-import com.sdt.nepush.msg.ContentMessage;
 
 /**
  * <p>@ProjectName:     NettyChat</p>
@@ -21,8 +19,4 @@ public interface IMessageProcessor {
     void receiveMsg(AppMessage message);
 
     void sendMsg(AppMessage message);
-
-    void sendMsg(ContentMessage message);
-
-    void sendMsg(BaseMessage message);
 }

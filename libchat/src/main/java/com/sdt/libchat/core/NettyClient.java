@@ -180,6 +180,22 @@ public class NettyClient implements ImsClient {
     }
 
     @Override
+    public int getAgreeAddFriendType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getAgreeAddFriendType();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getRefuseAddFriendType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getRefuseAddFriendType();
+        }
+        return 0;
+    }
+
+    @Override
     public int getServerSentReportMsgType() {
         if (mOnEventListener != null) {
             return mOnEventListener.getServerSentReportMsgType();
@@ -192,6 +208,14 @@ public class NettyClient implements ImsClient {
     public int getClientReceivedReportMsgType() {
         if (mOnEventListener != null) {
             return mOnEventListener.getClientReceivedReportMsgType();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getCreateGroupResultMgsType() {
+        if (mOnEventListener != null) {
+            return mOnEventListener.getCreateGroupResultMgsType();
         }
         return 0;
     }
@@ -326,12 +350,12 @@ public class NettyClient implements ImsClient {
 
     @Override
     public void sendMsg(TransMessageProtobuf.TransMessage transMessage, boolean reSend) {
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null) {
             logger.w("发送消息失败，消息为空\tmessage=" + transMessage);
             return;
         }
 
-        if (!StringUtil.isNullOrEmpty(transMessage.getHeader().getMsgId())) {
+        if (!StringUtil.isNullOrEmpty(transMessage.getMsgId())) {
             if (reSend) {
                 msgTimeoutTimerManager.add(transMessage);
             }
@@ -486,7 +510,7 @@ public class NettyClient implements ImsClient {
         private void sendHandshakeMsg() {
             TransMessageProtobuf.TransMessage handshakeMsg = getHandshakeMsg();
             if (handshakeMsg != null) {
-                logger.d("发送握手消息，message=" + handshakeMsg.getHeader().getMsgId());
+                logger.d("发送握手消息，message=" + handshakeMsg.getMsgId());
                 sendMsg(handshakeMsg, false);
             } else {
                 logger.d("请应用层构建握手消息！");

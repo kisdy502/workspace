@@ -56,7 +56,7 @@ public class MsgTimeoutTimer extends Timer {
         public void run() {
             if (imsClient.isClosed()) {
                 if (imsClient.getMsgTimeoutTimerManager() != null) {
-                    imsClient.getMsgTimeoutTimerManager().remove(msg.getHeader().getMsgId());
+                    imsClient.getMsgTimeoutTimerManager().remove(msg.getMsgId());
                 }
                 return;
             }
@@ -66,18 +66,16 @@ public class MsgTimeoutTimer extends Timer {
                 // 重发次数大于可重发次数，直接标识为发送失败，并通过消息转发器通知应用层
                 try {
                     TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-                    TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-                    headBuilder.setMsgId(msg.getHeader().getMsgId());
-                    headBuilder.setMsgType(imsClient.getServerSentReportMsgType());
-                    headBuilder.setTimestamp(System.currentTimeMillis());
-                    headBuilder.setStatusReport(ImsConfig.DEFAULT_REPORT_SERVER_SEND_MSG_FAILURE);
-                    builder.setHeader(headBuilder.build());
-
+                    builder.setMsgId(msg.getMsgId());
+                    builder.setMsgType(imsClient.getServerSentReportMsgType());
+                    builder.setSendTime(System.currentTimeMillis());
+                    builder.setStatusReport(ImsConfig.DEFAULT_REPORT_SERVER_SEND_MSG_FAILURE);
+                    TransMessageProtobuf.TransMessage transMessage = builder.build();
                     // 通知应用层消息发送失败
-                    imsClient.getMsgDispatcher().receivedMsg(builder.build());
+                    imsClient.getMsgDispatcher().receivedMsg(transMessage);
                 } finally {
                     // 从消息发送超时管理器移除该消息
-                    imsClient.getMsgTimeoutTimerManager().remove(msg.getHeader().getMsgId());
+                    imsClient.getMsgTimeoutTimerManager().remove(msg.getMsgId());
                     // 执行到这里，认为连接已断开或不稳定，触发重连
                     //imsClient.prepareConnect(false);  //这里似乎会触发无限重连的bug，先注释掉看看
                     currentResendCount = 0;

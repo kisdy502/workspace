@@ -82,7 +82,7 @@ public class ConversationFragment extends Fragment implements OnItemClickListene
     public void onItemClick(RecyclerView parent, View itemView, int position) {
         Conversation2Model conversation2Model = mConversationList.get(position);
         Intent intent = new Intent(getActivity(), ChatActivity.class);
-        intent.putExtra("toObject", conversation2Model.getToObject());
+        intent.putExtra("toObject", conversation2Model.getToObjectId());
         intent.putExtra("conversationType", conversation2Model.getConversationType());
         startActivity(intent);
     }

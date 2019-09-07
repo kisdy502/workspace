@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView tvReceiveMsg;
 
-    private String userId;
-    private String toUserId;
+    private Long userId;
+    private Long toUserId;
     private String token;
 
     private ProgressDialog dialog;
@@ -129,10 +129,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         logger.e("id=" + user2Model.getId() + ",name=" + user2Model.getUserName() + ",pwd=" + user2Model.getPassword());
-        userId = user2Model.getUserName();
+        userId = user2Model.getUserId();
         token = user2Model.getToken();
 
-        if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(token)) {
+        if (userId == 0L || TextUtils.isEmpty(token)) {
             startActivity(new Intent(this, LoginActivity.class));
         }
     }

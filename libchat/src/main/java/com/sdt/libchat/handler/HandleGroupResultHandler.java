@@ -12,13 +12,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * Created by sdt13411 on 2019/7/17.
  */
 
-public class HandleOutLineMessageListHandler extends ChannelInboundHandlerAdapter {
+public class HandleGroupResultHandler extends ChannelInboundHandlerAdapter {
 
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
     private NettyClient nettyClient;
 
-    public HandleOutLineMessageListHandler(NettyClient nettyClient) {
+    public HandleGroupResultHandler(NettyClient nettyClient) {
         this.nettyClient = nettyClient;
     }
 
@@ -28,11 +28,12 @@ public class HandleOutLineMessageListHandler extends ChannelInboundHandlerAdapte
         if (transMessage == null) {
             return;
         }
+        int messageType = nettyClient.getCreateGroupResultMgsType();
+        if (messageType == transMessage.getMsgType()) {
+            logger.i("创建群组结果:,id=" + transMessage);
 
-        int transMessageType = nettyClient.getOutLineMsgListType();
-        if (transMessageType == transMessage.getMsgType()) {
-            logger.i("服务器下发离线消息列表:,id=" + transMessage.getMsgId());
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
+
         } else {
             ctx.fireChannelRead(msg);
         }

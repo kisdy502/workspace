@@ -42,7 +42,7 @@ public class ImsManager {
         return inited;
     }
 
-    public synchronized void init(final String userId, final String token, String hostJson, int appStatus) {
+    public synchronized void init(Long userId, final String token, String hostJson, int appStatus) {
         if (inited) {
             logger.i("is inited return!!!");
             return;

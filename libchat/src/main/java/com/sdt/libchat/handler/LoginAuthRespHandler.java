@@ -27,21 +27,21 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage handshakeRespMsg = (TransMessageProtobuf.TransMessage) msg;
-        if (handshakeRespMsg == null || handshakeRespMsg.getHeader() == null) {
+        if (handshakeRespMsg == null) {
             return;
         }
 
         TransMessageProtobuf.TransMessage handshakeMsg = nettyClient.getHandshakeMsg();
-        if (handshakeMsg == null || handshakeMsg.getHeader() == null) {
+        if (handshakeMsg == null) {
             return;
         }
 
-        int handshakeMsgType = handshakeMsg.getHeader().getMsgType();
-        if (handshakeMsgType == handshakeRespMsg.getHeader().getMsgType()) {
-            logger.d("收到服务端握手响应消息，message=" + handshakeRespMsg.getHeader().getMsgId());
+        int handshakeMsgType = handshakeMsg.getMsgType();
+        if (handshakeMsgType == handshakeRespMsg.getMsgType()) {
+            logger.d("收到服务端握手响应消息，message=" + handshakeRespMsg.getMsgId());
             int status = -1;
             try {
-                JSONObject jsonObj = JSON.parseObject(handshakeRespMsg.getHeader().getExtend());
+                JSONObject jsonObj = JSON.parseObject(handshakeRespMsg.getExtend());
                 status = jsonObj.getIntValue("status");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -68,7 +68,7 @@ public class LoginAuthRespHandler extends ChannelInboundHandlerAdapter {
         // 握手成功，检查消息发送超时管理器里是否有发送超时的消息，如果有，则全部重发
         nettyClient.getMsgTimeoutTimerManager().onReSendAll();
 
-        logger.d("发送心跳消息：" + heartbeatMsg.getHeader().getMsgId() + "当前心跳间隔为：" + nettyClient.getHeartbeatInterval() + "ms\n");
+        logger.d("发送心跳消息：" + heartbeatMsg.getMsgId() + "当前心跳间隔为：" + nettyClient.getHeartbeatInterval() + "ms\n");
         nettyClient.sendMsg(heartbeatMsg);
 
         // 添加心跳消息管理handler

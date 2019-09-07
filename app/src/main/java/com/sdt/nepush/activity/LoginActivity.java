@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.raizlabs.android.dbflow.sql.language.NameAlias;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.sdt.libchat.ssl.SignleSSlClient;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
 import com.sdt.nepush.App;
@@ -30,12 +31,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ILogger logger = ILoggerFactory.getLogger(getClass());
+    private ILogger logger = ILoggerFactory.getLogger(getClass());
 
-    Button btnLogin;
-    Button btnToRegister;
-    EditText edtUserName;
-    EditText edtPassword;
+    private Button btnLogin;
+    private Button btnToRegister;
+    private EditText edtUserName;
+    private EditText edtPassword;
+    private User2Model user2Model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
         btnToRegister.setOnClickListener(this);
         setTitle("Login");
+        initData();
+
+        SignleSSlClient signleSSlClient = new SignleSSlClient(App.getInstance());
+        signleSSlClient.start();
     }
 
 
@@ -81,9 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void login(String userName, String password) {
-        UserBean userBean = new UserBean();
-        userBean.setName(userName);
-        userBean.setPassword(password);
         MedicalRetrofit.getInstance().getMedicalService().login(userName, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,21 +96,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (!loginRestResp.isSuccess()) {
                             return loginRestResp;
                         }
-                        User2Model user2Model = SQLite.select().from(User2Model.class)
-                                .where(User2Model_Table.timeStamp.lessThanOrEq(System.currentTimeMillis())
-                                        , User2Model_Table.userName.eq(userName))
+                        UserBean userBean = loginRestResp.getLoginUser();
+                        User2Model currentUser = User2Model.getLoginUser();
+                        if (currentUser != null) {
+                            currentUser.setCurrentUserTag(User2Model.NOT_CURRENT_TAG);
+                            currentUser.update();
+                        }
+                        user2Model = SQLite.select().from(User2Model.class)
+                                .where(User2Model_Table.userId.eq(userBean.getId()))
                                 .orderBy(OrderBy.fromNameAlias(NameAlias.of("id")))
                                 .groupBy(NameAlias.of("id"))
                                 .querySingle();
                         if (user2Model == null) {
                             //db被清掉了情况
                             user2Model = new User2Model();
+                            user2Model.setUserId(userBean.getId());
                             user2Model.setUserName(userName);
                             user2Model.setPassword(password);
-                            user2Model.setToken(loginRestResp.getData());
+                            user2Model.setToken(userBean.getToken());
+                            user2Model.setCurrentUserTag(User2Model.CURRENT_TAG);
+                            user2Model.setTimeStamp(System.currentTimeMillis());
                             user2Model.save();
                         } else {
-                            user2Model.setToken(loginRestResp.getData());
+                            user2Model.setToken(userBean.getToken());
+                            user2Model.setCurrentUserTag(User2Model.CURRENT_TAG);
+                            user2Model.setTimeStamp(System.currentTimeMillis());
                             user2Model.update();
                         }
                         return loginRestResp;
@@ -123,10 +136,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onNext(LoginRestResp loginRestResp) {
                         logger.d("LoginRestResp:" + loginRestResp.toString());
                         if (loginRestResp.isSuccess()) {
-                            loginRestResp.getData();
+                            UserBean userBean = loginRestResp.getLoginUser();
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.putExtra("userId", userName);
-                            intent.putExtra("token", loginRestResp.getData());
+                            intent.putExtra("userId", user2Model.getUserId());
+                            intent.putExtra("token", userBean.getToken());
                             startActivity(intent);
                             finish();
                         } else {

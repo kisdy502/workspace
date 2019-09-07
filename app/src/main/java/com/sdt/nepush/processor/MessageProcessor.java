@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.sdt.nepush.ims.ImsManager;
 import com.sdt.nepush.msg.AppMessage;
-import com.sdt.nepush.msg.BaseMessage;
-import com.sdt.nepush.msg.ContentMessage;
 import com.sdt.nepush.handler.IMessageHandler;
 import com.sdt.nepush.handler.MessageHandlerFactory;
 import com.sdt.nepush.util.CThreadPoolExecutor;
@@ -50,11 +48,11 @@ public class MessageProcessor implements IMessageProcessor {
             @Override
             public void run() {
                 try {
-                    IMessageHandler messageHandler = MessageHandlerFactory.getHandlerByMsgType(message.getHead().getMessageType());
+                    IMessageHandler messageHandler = MessageHandlerFactory.getHandlerByMsgType(message.getMsgType());
                     if (messageHandler != null) {
                         messageHandler.execute(message);
                     } else {
-                        Log.e(TAG, "未找到消息处理handler，messageType=" + message.getHead().getMessageType());
+                        Log.e(TAG, "未找到消息处理handler，messageType=" + message.getMsgType());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -70,38 +68,12 @@ public class MessageProcessor implements IMessageProcessor {
      * @param message
      */
     @Override
-    public void sendMsg(final AppMessage message) {
-        CThreadPoolExecutor.runInBackground(new Runnable() {
-
-            @Override
-            public void run() {
-                boolean isActive = ImsManager.getInstance().isInited();
-                if (isActive) {
-                    ImsManager.getInstance().sendMessage(MessageBuilder.getProtoBufMessageBuilderByAppMessage(message).build());
-                } else {
-                    Log.e(TAG, "发送消息失败");
-                }
-            }
-        });
-    }
-
-    /**
-     * 发送消息
-     *
-     * @param message
-     */
-    @Override
-    public void sendMsg(ContentMessage message) {
-        this.sendMsg(MessageBuilder.buildAppMessage(message));
-    }
-
-    /**
-     * 发送消息
-     *
-     * @param message
-     */
-    @Override
-    public void sendMsg(BaseMessage message) {
-        this.sendMsg(MessageBuilder.buildAppMessage(message));
+    public void sendMsg(AppMessage message) {
+        boolean isActive = ImsManager.getInstance().isInited();
+        if (isActive) {
+            ImsManager.getInstance().sendMessage(MessageBuilder.getProtoBufMessageBuilderByAppMessage(message));
+        } else {
+            Log.e(TAG, "发送消息失败");
+        }
     }
 }

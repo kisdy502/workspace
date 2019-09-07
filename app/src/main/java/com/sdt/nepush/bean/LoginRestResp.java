@@ -1,20 +1,24 @@
 package com.sdt.nepush.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginRestResp extends RestResp {
 
-    protected String data;
+    @SerializedName("data")
+    protected UserBean userBean;
 
     protected LoginRestResp(int status, String message) {
         super(status, message);
     }
 
-    public LoginRestResp(int status, String message, String data) {
+    public LoginRestResp(int status, String message, UserBean loginUser) {
         super(status, message);
-        this.data = data;
+        this.userBean = loginUser;
     }
 
-    public String getData() {
-        return data;
+    public UserBean getLoginUser() {
+        return userBean;
+
     }
 }
 

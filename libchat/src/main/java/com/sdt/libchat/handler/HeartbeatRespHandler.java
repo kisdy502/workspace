@@ -25,18 +25,18 @@ public class HeartbeatRespHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage handshakeRespMsg = (TransMessageProtobuf.TransMessage) msg;
-        if (handshakeRespMsg == null || handshakeRespMsg.getHeader() == null) {
+        if (handshakeRespMsg == null) {
             return;
         }
 
         TransMessageProtobuf.TransMessage handshakeMsg = nettyClient.getHeartbeatMsg();
-        if (handshakeMsg == null || handshakeMsg.getHeader() == null) {
+        if (handshakeMsg == null ) {
             return;
         }
 
-        int handshakeMsgType = handshakeMsg.getHeader().getMsgType();
-        if (handshakeMsgType == handshakeRespMsg.getHeader().getMsgType()) {
-            logger.i("收到服务端心跳响应,id=" + handshakeRespMsg.getHeader().getMsgId());
+        int handshakeMsgType = handshakeMsg.getMsgType();
+        if (handshakeMsgType == handshakeRespMsg.getMsgType()) {
+            logger.i("收到服务端心跳响应,id=" + handshakeRespMsg.getMsgId());
         } else {
             ctx.fireChannelRead(msg);
         }

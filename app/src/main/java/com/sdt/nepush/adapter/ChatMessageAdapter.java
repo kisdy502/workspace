@@ -49,14 +49,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     private int viewTypeSend = 0;
     private int viewTypeReceiver = 1;
-    private String myId;
-    private String toId;
+    private Long myId;
+    private Long toObjectId;
 
-    public ChatMessageAdapter(Context mContext, List<Message2Model> chatMessageList, String myId, String toId) {
+    public ChatMessageAdapter(Context mContext, List<Message2Model> chatMessageList, Long myId, Long toId) {
         this.mContext = mContext;
         this.chatMessageList = chatMessageList;
         this.myId = myId;
-        this.toId = toId;
+        this.toObjectId = toId;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         if (message2Model.getStatusReport() == -1) {
             holder.imgSendFailed.setVisibility(View.VISIBLE);
             holder.progressBar.setVisibility(View.GONE);
-        } else if (message2Model.getStatusReport() == 0 && message2Model.getFromId().equalsIgnoreCase(myId)) {
+        } else if (message2Model.getStatusReport() == 0 && message2Model.getFromId() == myId) {
             holder.imgSendFailed.setVisibility(View.GONE);
             holder.progressBar.setVisibility(View.VISIBLE);
         } else {
@@ -96,9 +96,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public int getItemViewType(int position) {
         Message2Model message2Model = chatMessageList.get(position);
-        if (message2Model.getFromId().equalsIgnoreCase(myId)) {
+        if (message2Model.getFromId() == myId) {
             return viewTypeSend;
-        } else if (message2Model.getFromId().equalsIgnoreCase(toId)) {
+        } else if (message2Model.getFromId() == toObjectId) {
             return viewTypeReceiver;
         } else
             return super.getItemViewType(position);

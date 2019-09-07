@@ -12,19 +12,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
 import com.sdt.nepush.App;
-import com.sdt.nepush.ims.ImsManager;
-import com.sdt.nepush.ims.MessageType;
 import com.sdt.nepush.R;
 import com.sdt.nepush.bean.SearchRestResp;
 import com.sdt.nepush.bean.UserBean;
 import com.sdt.nepush.db.User2Model;
+import com.sdt.nepush.ims.MessageType;
 import com.sdt.nepush.msg.AppMessage;
 import com.sdt.nepush.net.MedicalRetrofit;
 import com.sdt.nepush.processor.MessageBuilder;
+import com.sdt.nepush.processor.MessageProcessor;
 
 import java.util.UUID;
 
@@ -40,7 +39,7 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
     private Toolbar mToolbar;
     private View mSearchLayout;
     private TextView tvSearchedUser;
-    private UserBean userBean;
+    private UserBean searchedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +64,6 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
             }
         });
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
-        mToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.apply_jurassic));
-
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
     }
 
     @Override
@@ -125,9 +116,9 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onNext(SearchRestResp searchRestResp) {
                         logger.d("SearchRestResp:" + searchRestResp.toString());
-                        userBean = searchRestResp.getUserBean();
-                        if (userBean != null) {
-                            tvSearchedUser.setText(userBean.getName());
+                        searchedUser = searchRestResp.getUserBean();
+                        if (searchedUser != null) {
+                            tvSearchedUser.setText(searchedUser.getName());
                         } else {
                             tvSearchedUser.setText("用户不存在");
                         }
@@ -149,10 +140,10 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         //发送朋友验证
-        if (userBean == null) {
+        if (searchedUser == null) {
             return;
         }
-        sendAddFreindMessage(userBean);
+        sendAddFreindMessage(searchedUser);
     }
 
     private void sendAddFreindMessage(UserBean userBean) {
@@ -161,13 +152,10 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
                         UUID.randomUUID().toString(),
                         MessageType.MESSAGE_REQUEST_ADD_FRIEND.getMsgType(),
                         0,
-                        User2Model.getLoginUser().getUserName(),
-                        userBean.getName(),
-                        "friend",
-                        "我是" + userBean.getName() + ",可以加个好友吗"
-                );
-        TransMessageProtobuf.TransMessage transMessage =
-                MessageBuilder.getProtoBufMessageBuilderByAppMessage(appMessage).build();
-        ImsManager.getInstance().sendMessage(transMessage, true);
+                        User2Model.getLoginUser().getUserId(),
+                        userBean.getId(),
+                        "add friend request",
+                        "我是" + userBean.getName() + ",可以加个好友吗");
+        MessageProcessor.getInstance().sendMsg(appMessage);
     }
 }

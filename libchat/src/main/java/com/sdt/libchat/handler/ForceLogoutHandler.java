@@ -7,8 +7,6 @@ import com.sdt.libcommon.esc.ILoggerFactory;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * Created by sdt13411 on 2019/7/17.
@@ -27,13 +25,13 @@ public class ForceLogoutHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null) {
             return;
         }
 
-        int transMessageType = transMessage.getHeader().getMsgType();
+        int transMessageType = transMessage.getMsgType();
         if (transMessageType == nettyClient.getForceLogoutMsgType()) {
-            logger.i("客户度被踢下线了,id=" + transMessage.getHeader().getMsgId());
+            logger.i("客户度被踢下线了,id=" + transMessage.getMsgId());
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
         } else {
             ctx.fireChannelRead(msg);

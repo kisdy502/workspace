@@ -25,18 +25,18 @@ public class HandleFriendListHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null || transMessage.getHeader() == null) {
+        if (transMessage == null) {
             return;
         }
 
         TransMessageProtobuf.TransMessage friendListMsg = nettyClient.getFriendListMsg();
-        if (friendListMsg == null || friendListMsg.getHeader() == null) {
+        if (friendListMsg == null) {
             return;
         }
 
-        int transMessageType = transMessage.getHeader().getMsgType();
-        if (transMessageType == friendListMsg.getHeader().getMsgType()) {
-            logger.i("服务器下发朋友列表:,id=" + transMessage.getBody());
+        int transMessageType = transMessage.getMsgType();
+        if (transMessageType == friendListMsg.getMsgType()) {
+            logger.i("服务器下发朋友列表:,id=" + transMessage.getContent());
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
         } else {
             ctx.fireChannelRead(msg);

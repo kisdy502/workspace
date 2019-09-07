@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="searchViewStyle">@style/Widget.SearchView</item>
     </style>
 
     <!-- toolbar样式 -->
@@ -15,14 +16,25 @@
     </style>
 
     <!-- ToolBar菜单样式.-->
-    <style name="popup_theme" >
+    <style name="popup_theme">
         <!--设置背景-->
         <item name="android:background">@color/colorPrimaryDark</item>
         <!--设置字体颜色-->
         <item name="android:textColor">@android:color/white</item>
 
-        <item name="actionMenuTextColor">@android:color/white</item> <!--颜色-->
+        <item name="android:actionMenuTextColor">@android:color/white</item> <!--颜色-->
         <!--设置不覆盖锚点-->
-        <item name="overlapAnchor">false</item>
+        <item name="android:overlapAnchor">false</item>
+    </style>
+
+
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <!--设置背景-->
+        <item name="android:closeIcon">@drawable/icon_close</item>
+        <!--设置字体颜色-->
+        <item name="android:searchIcon">@drawable/icon_search</item>
+        <item name="android:searchHintIcon">@drawable/icon_search</item>
+        <item name="android:textColorHint">#FDFDFD</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
     </style>
 </resources>

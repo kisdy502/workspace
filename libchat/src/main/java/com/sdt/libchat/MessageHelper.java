@@ -14,18 +14,17 @@ import io.netty.util.internal.StringUtil;
  */
 public class MessageHelper {
 
-    public static TransMessageProtobuf.TransMessage buildReceivedReportMsg(String msgId, int reportMsgType) {
-        if (StringUtil.isNullOrEmpty(msgId)) {
+    public static TransMessageProtobuf.TransMessage buildReceivedReportMsg(TransMessageProtobuf.TransMessage
+                                                                                   transMessage, int reportMsgType) {
+        if (StringUtil.isNullOrEmpty(transMessage.getMsgId())) {
             return null;
         }
-
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgId(msgId);
-        headBuilder.setMsgType(reportMsgType);
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder.build());
-
+        builder.setMsgId(transMessage.getMsgId());
+        builder.setMsgType(reportMsgType);
+        builder.setFromId(transMessage.getToId());
+        builder.setToId(transMessage.getFromId());
+        builder.setSendTime(System.currentTimeMillis());
         return builder.build();
     }
 }

@@ -41,6 +41,8 @@ public class MessageHandlerFactory {
         HANDLERS.put(MessageType.GET_OUTLINE_MESSAGE_LIST.getMsgType(), new OutlineListMessageHandler());
         HANDLERS.put(MessageType.FORCE_CLIENT_LOGOUT.getMsgType(), new ForceLogoutMessageHandler());
         HANDLERS.put(MessageType.MESSAGE_REQUEST_ADD_FRIEND.getMsgType(), new HandleAddFriendHandler());
+        HANDLERS.put(MessageType.MESSAGE_AGREE_ADD_FRIEND_RESULT.getMsgType(), new HandleAgreeAddFriendHandler());
+        HANDLERS.put(MessageType.MESSAGE_REFUSE_ADD_FRIEND_RESULT.getMsgType(), new HandleRefuseAddFriendHandler());
     }
 
     /**

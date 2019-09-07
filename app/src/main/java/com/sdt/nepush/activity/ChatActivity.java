@@ -40,7 +40,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
-    private String toObject;
+    private Long toObjectId;
     private int mConversionType;
     private User2Model currentUser;
     private Conversation2Model mConversation2Model;
@@ -75,7 +75,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_chat_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(toObject);
+        setTitle(toObjectId + "");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,11 +113,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     //加载聊天记录
     private void initChatMessageList() {
         OperatorGroup op = OperatorGroup.clause(OperatorGroup.clause()
-                .and(Message2Model_Table.fromId.eq(currentUser.getUserName()))
-                .and(Message2Model_Table.toId.eq(toObject)))
+                .and(Message2Model_Table.fromId.eq(currentUser.getUserId()))
+                .and(Message2Model_Table.toId.eq(toObjectId)))
                 .or(OperatorGroup.clause()
-                        .and(Message2Model_Table.fromId.eq(toObject))
-                        .and(Message2Model_Table.toId.eq(currentUser.getUserName())));
+                        .and(Message2Model_Table.fromId.eq(toObjectId))
+                        .and(Message2Model_Table.toId.eq(currentUser.getUserId())));
 
 
         chatMessageList = SQLite.select().from(Message2Model.class)
@@ -130,21 +130,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadConversation() {
-        mConversation2Model = Conversation2Model.queryConversion(currentUser.getUserName(), toObject, mConversionType);
+        mConversation2Model = Conversation2Model.queryConversion(currentUser.getUserName(), toObjectId, mConversionType);
     }
 
     private void initAndValidExtra() {
         currentUser = User2Model.getLoginUser();
-        toObject = getIntent().getStringExtra("toObject");
+        toObjectId = getIntent().getLongExtra("toObject", 0L);
         mConversionType = getIntent().getIntExtra("conversationType", Conversation2Model.Conversation_Type_Single);
-        if (currentUser == null || TextUtils.isEmpty(toObject)) {
-            finish();
-        }
     }
 
     private void initRecyclerList() {
         rvChatList.setLayoutManager(new LinearLayoutManager(getApplication()));
-        mAdapter = new ChatMessageAdapter(this, chatMessageList, currentUser.getUserName(), toObject);
+        mAdapter = new ChatMessageAdapter(this, chatMessageList, currentUser.getUserId(), toObjectId);
         rvChatList.setAdapter(mAdapter);
     }
 
@@ -167,8 +164,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         message.setMsgId(UUID.randomUUID().toString());
         message.setMsgType(MessageType.SINGLE_CHAT.getMsgType());
         message.setMsgContentType(MessageType.MessageContentType.TEXT.getMsgContentType());
-        message.setFromId(currentUser.getUserName());
-        message.setToId(toObject);
+        message.setFromId(currentUser.getUserId());
+        message.setToId(toObjectId);
         message.setSendTime(System.currentTimeMillis());
         message.setContent(edtMessage.getText().toString());
         return message;
@@ -202,7 +199,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (mConversation2Model == null) {
             mConversation2Model = new Conversation2Model();
-            mConversation2Model.setToObject(toObject);
+            mConversation2Model.setToObjectId(toObjectId);
             mConversation2Model.setCreateUser(currentUser.getUserName());
             mConversation2Model.setConversationType(mConversionType);
             mConversation2Model.save();

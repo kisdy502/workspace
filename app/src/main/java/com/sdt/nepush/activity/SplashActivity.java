@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void initUser() {
         User2Model user2Model = SQLite.select().from(User2Model.class)
-                .where(User2Model_Table.timeStamp.lessThanOrEq(System.currentTimeMillis()))
+                .where(User2Model_Table.currentUserTag.eq(User2Model.CURRENT_TAG))
                 .orderBy(OrderBy.fromNameAlias(NameAlias.of("id")))
                 .groupBy(NameAlias.of("id"))
                 .querySingle();
@@ -37,13 +37,12 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }
-        logger.e("id=" + user2Model.getId() + ",name=" + user2Model.getUserName() + ",pwd=" + user2Model.getPassword());
-        String userId = user2Model.getUserName();
+        logger.e("id=" + user2Model.getUserId() + ",name=" + user2Model.getUserName() + ",pwd=" + user2Model.getPassword());
+        Long userId = user2Model.getUserId();
         String token = user2Model.getToken();
 
-        if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(token)) {
+        if (userId == null || TextUtils.isEmpty(token)) {
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
         } else {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             intent.putExtra("userId", userId);

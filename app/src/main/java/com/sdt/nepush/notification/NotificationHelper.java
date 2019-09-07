@@ -29,8 +29,8 @@ public class NotificationHelper {
             return;
         }
         Notification notification = new NotificationCompat.Builder(context, "chat")
-                .setContentTitle(appMessage.getHead().getFromId())
-                .setContentText(appMessage.getBody())
+                .setContentTitle(appMessage.getFromId() + "")
+                .setContentText(appMessage.getContent())
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.logo)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo))

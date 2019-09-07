@@ -13,34 +13,37 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * Created by sdt13411 on 2019/7/17.
  */
 
-public class RequestAddFriendHandler extends ChannelInboundHandlerAdapter {
+public class HandleAddFriendResultHandler extends ChannelInboundHandlerAdapter {
 
     ILogger logger = ILoggerFactory.getLogger(getClass());
 
     private NettyClient nettyClient;
 
-    public RequestAddFriendHandler(NettyClient nettyClient) {
+    public HandleAddFriendResultHandler(NettyClient nettyClient) {
         this.nettyClient = nettyClient;
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         TransMessageProtobuf.TransMessage transMessage = (TransMessageProtobuf.TransMessage) msg;
-        if (transMessage == null ) {
+        if (transMessage == null) {
             return;
         }
 
-        int transMessageType = nettyClient.getRequestAddFriendType();
-        if (transMessageType == transMessage.getMsgType()) {
-
-            TransMessageProtobuf.TransMessage receivedReportMsg =
-                    MessageHelper.buildReceivedReportMsg(transMessage,
-                            nettyClient.getClientReceivedReportMsgType());
+        int transMessageType = transMessage.getMsgType();
+        if (transMessageType == nettyClient.getAgreeAddFriendType()) {
+            TransMessageProtobuf.TransMessage receivedReportMsg = MessageHelper.buildReceivedReportMsg(transMessage,
+                    nettyClient.getClientReceivedReportMsgType());
             if (receivedReportMsg != null) {
                 nettyClient.sendMsg(receivedReportMsg);
             }
-
-            logger.i("请求加好友:,id=" + transMessage.getMsgId());
+            nettyClient.getMsgDispatcher().receivedMsg(transMessage);
+        } else if (transMessageType == nettyClient.getRefuseAddFriendType()) {
+            TransMessageProtobuf.TransMessage receivedReportMsg = MessageHelper.buildReceivedReportMsg(transMessage,
+                    nettyClient.getClientReceivedReportMsgType());
+            if (receivedReportMsg != null) {
+                nettyClient.sendMsg(receivedReportMsg);
+            }
             nettyClient.getMsgDispatcher().receivedMsg(transMessage);
         } else {
             ctx.fireChannelRead(msg);

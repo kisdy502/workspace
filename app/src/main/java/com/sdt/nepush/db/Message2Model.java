@@ -20,9 +20,9 @@ public class Message2Model extends BaseModel {
     @Column
     protected int msgContentType; // 消息内容乐行
     @Column
-    protected String fromId;      // 发送者id
+    protected Long fromId;      // 发送者id
     @Column
-    protected String toId;        // 接收者id
+    protected Long toId;        // 接收者id
     @Column
     protected long sendTime;     // 消息时间戳
     @Column
@@ -64,19 +64,19 @@ public class Message2Model extends BaseModel {
         this.msgContentType = msgContentType;
     }
 
-    public String getFromId() {
+    public Long getFromId() {
         return fromId;
     }
 
-    public void setFromId(String fromId) {
+    public void setFromId(Long fromId) {
         this.fromId = fromId;
     }
 
-    public String getToId() {
+    public Long getToId() {
         return toId;
     }
 
-    public void setToId(String toId) {
+    public void setToId(Long toId) {
         this.toId = toId;
     }
 

@@ -1,12 +1,10 @@
 package com.sdt.nepush.handler;
 
 import android.content.Intent;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.sql.language.Select;
 import com.sdt.im.protobuf.TransMessageProtobuf;
 import com.sdt.libcommon.esc.ILogger;
 import com.sdt.libcommon.esc.ILoggerFactory;
@@ -43,8 +41,8 @@ public class HandShakeMessageHandler extends AbstractMessageHandler {
     @Override
     protected void action(AppMessage message) {
         logger.d("握手结果，message=" + message);
-        if (message != null && message.getHead() != null) {
-            JSONObject jsonObj = JSON.parseObject(message.getHead().getExtend());
+        if (message != null) {
+            JSONObject jsonObj = JSON.parseObject(message.getExtend());
             int status = jsonObj.getIntValue("status");
             if (status == 1) {
                 ImsManager.getInstance().sendMessage(buildMessage(), false);
@@ -78,12 +76,10 @@ public class HandShakeMessageHandler extends AbstractMessageHandler {
     private TransMessageProtobuf.TransMessage buildMessage() {
         User2Model user = User2Model.getLoginUser();
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgType(MessageType.GET_USER_FRIEND_LIST.getMsgType());
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setFromId(user.getUserName());
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder);
+        builder.setMsgType(MessageType.GET_USER_FRIEND_LIST.getMsgType());
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setFromId(user.getUserId());
+        builder.setSendTime(System.currentTimeMillis());
         TransMessageProtobuf.TransMessage message = builder.build();
         return message;
     }
@@ -91,12 +87,10 @@ public class HandShakeMessageHandler extends AbstractMessageHandler {
     private TransMessageProtobuf.TransMessage buildMessage2() {
         User2Model user = User2Model.getLoginUser();
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgType(MessageType.GET_OUTLINE_MESSAGE_LIST.getMsgType());
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setFromId(user.getUserName());
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder);
+        builder.setMsgType(MessageType.GET_OUTLINE_MESSAGE_LIST.getMsgType());
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setFromId(user.getUserId());
+        builder.setSendTime(System.currentTimeMillis());
         TransMessageProtobuf.TransMessage message = builder.build();
         return message;
     }
@@ -107,13 +101,11 @@ public class HandShakeMessageHandler extends AbstractMessageHandler {
         List<Message2Model> failedSendList = SQLite.select().from(Message2Model.class)
                 .where(Message2Model_Table.statusReport.eq(-1)).queryList();
         TransMessageProtobuf.TransMessage.Builder builder = TransMessageProtobuf.TransMessage.newBuilder();
-        TransMessageProtobuf.MessageHeader.Builder headBuilder = TransMessageProtobuf.MessageHeader.newBuilder();
-        headBuilder.setMsgType(MessageType.RESEND_FAILED_MESSAGE_LIST.getMsgType());
-        headBuilder.setMsgId(UUID.randomUUID().toString());
-        headBuilder.setFromId(user.getUserName());
-        headBuilder.setTimestamp(System.currentTimeMillis());
-        builder.setHeader(headBuilder);
-        builder.setBody(failedSendList.toString());
+        builder.setMsgType(MessageType.RESEND_FAILED_MESSAGE_LIST.getMsgType());
+        builder.setMsgId(UUID.randomUUID().toString());
+        builder.setFromId(user.getUserId());
+        builder.setSendTime(System.currentTimeMillis());
+        builder.setContent(failedSendList.toString());
         TransMessageProtobuf.TransMessage message = builder.build();
         return message;
     }

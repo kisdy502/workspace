@@ -10,6 +10,7 @@ public class UserBean {
     private String mobile;
     private String password;
     private String name;
+    private String token;
 
     public Long getId() {
         return id;
@@ -41,5 +42,13 @@ public class UserBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

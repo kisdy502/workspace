@@ -57,11 +57,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public RegisterResp apply(RegisterResp registerResp) throws Exception {
                         User2Model user2Model = new User2Model();
+                        user2Model.setUserId(registerResp.getData().getId());
                         user2Model.setUserName(userName);
                         user2Model.setPassword(password);
                         user2Model.setTimeStamp(System.currentTimeMillis());
-                        boolean result = user2Model.save();
-                        logger.d("save user to db:" + result);
+                        user2Model.save();
                         return registerResp;
                     }
                 })
@@ -91,7 +91,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }
